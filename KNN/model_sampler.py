@@ -36,50 +36,18 @@ class KKNSampler:
         self.test_data = test_data
     
     def run(self,k_folds=10):
-        # # We want to shuffle and split the data for each run (combination of k and sampling)
-        # self.k_value = []
-        # self.mean = []
-        # self.std = []
-        # for k in self.k_range:
-        #     accuracies = [] # List to store accuracies for each sampling run
-        #     for i in range(self.sampling_runs):
-        #         print("Running K=",k," i=",i,"/20")
-        #         # self.processorObj: PreProcesser = PreProcesser(self.df)
-        #         # self.processorObj.shuffle()
-        #         X_train, X_test, y_train, y_test = self.processorObj.split()
-        #         # Now we want to trainåå the model and get accuracy
-        #         knn = KNNModel(k=k)
-        #         knn.trainModel(X_train, y_train)
-        #         if self.test_data:
-        #             predictions = knn.testModel(X_test)
-        #             calcModel = CalculateAccuracy(y_test, predictions)
-        #         else:
-        #             predictions = knn.testModel(X_train)
-        #             calcModel = CalculateAccuracy(y_train, predictions)
-        #         # We use the Calculate Accuracy class to calculate the accuracy
-        #         accuracies.append(calcModel.accuracy_percentage())
-        #     meanK= np.mean(accuracies)
-        #     stdK = np.std(accuracies)
-        #     # We now get mean and standard deviations of the accuracies of k to plot
-        #     self.mean.append(meanK)# mean of 20 rounds
-        #     self.std.append(stdK) # std of 20 rounds
-        #     self.k_value.append(k)
-        # return self.mean,self.std,self.k_value
+        # We want to shuffle and split the data for each run (combination of k and sampling)
         self.k_value = []
         self.mean = []
         self.std = []
-        y = self.df['Diagnosis'].values  # or whatever your label column is called
-        folds = stratified_kfold_indices(y, k=k_folds, seed=42)
         for k in self.k_range:
-            print("Running K=",k)
-            accuracies = []
-            for fold_idx in range(k_folds):
-                test_idx = folds[fold_idx]
-                train_idx = np.concatenate([folds[i] for i in range(k_folds) if i != fold_idx])
-                X_train = self.df.iloc[train_idx].drop(columns=['Diagnosis']).values
-                y_train = self.df.iloc[train_idx]['Diagnosis'].values
-                X_test = self.df.iloc[test_idx].drop(columns=['Diagnosis']).values
-                y_test = self.df.iloc[test_idx]['Diagnosis'].values
+            accuracies = [] # List to store accuracies for each sampling run
+            for i in range(self.sampling_runs):
+                print("Running K=",k," i=",i,"/20")
+                # self.processorObj: PreProcesser = PreProcesser(self.df)
+                # self.processorObj.shuffle()
+                X_train, X_test, y_train, y_test = self.processorObj.split()
+                # Now we want to trainåå the model and get accuracy
                 knn = KNNModel(k=k)
                 knn.trainModel(X_train, y_train)
                 if self.test_data:
@@ -88,15 +56,47 @@ class KKNSampler:
                 else:
                     predictions = knn.testModel(X_train)
                     calcModel = CalculateAccuracy(y_train, predictions)
-                predictions = knn.testModel(X_test)
-                calcModel = CalculateAccuracy(y_test, predictions)
+                # We use the Calculate Accuracy class to calculate the accuracy
                 accuracies.append(calcModel.accuracy_percentage())
-            meanK = np.mean(accuracies)
+            meanK= np.mean(accuracies)
             stdK = np.std(accuracies)
-            self.mean.append(meanK)
-            self.std.append(stdK)
+            # We now get mean and standard deviations of the accuracies of k to plot
+            self.mean.append(meanK)# mean of 20 rounds
+            self.std.append(stdK) # std of 20 rounds
             self.k_value.append(k)
-        return self.mean, self.std, self.k_value
+        return self.mean,self.std,self.k_value
+        # self.k_value = []
+        # self.mean = []
+        # self.std = []
+        # y = self.df['Diagnosis'].values  # or whatever your label column is called
+        # folds = stratified_kfold_indices(y, k=k_folds, seed=42)
+        # for k in self.k_range:
+        #     print("Running K=",k)
+        #     accuracies = []
+        #     for fold_idx in range(k_folds):
+        #         test_idx = folds[fold_idx]
+        #         train_idx = np.concatenate([folds[i] for i in range(k_folds) if i != fold_idx])
+        #         X_train = self.df.iloc[train_idx].drop(columns=['Diagnosis']).values
+        #         y_train = self.df.iloc[train_idx]['Diagnosis'].values
+        #         X_test = self.df.iloc[test_idx].drop(columns=['Diagnosis']).values
+        #         y_test = self.df.iloc[test_idx]['Diagnosis'].values
+        #         knn = KNNModel(k=k)
+        #         knn.trainModel(X_train, y_train)
+        #         if self.test_data:
+        #             predictions = knn.testModel(X_test)
+        #             calcModel = CalculateAccuracy(y_test, predictions)
+        #         else:
+        #             predictions = knn.testModel(X_train)
+        #             calcModel = CalculateAccuracy(y_train, predictions)
+        #         predictions = knn.testModel(X_test)
+        #         calcModel = CalculateAccuracy(y_test, predictions)
+        #         accuracies.append(calcModel.accuracy_percentage())
+        #     meanK = np.mean(accuracies)
+        #     stdK = np.std(accuracies)
+        #     self.mean.append(meanK)
+        #     self.std.append(stdK)
+        #     self.k_value.append(k)
+        # return self.mean, self.std, self.k_value
     
     def plotModel(self,normalized = True):
         colors = ('skyblue','blue') if self.test_data else ('salmon','red')
