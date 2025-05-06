@@ -81,6 +81,12 @@ class KKNSampler:
                 y_test = self.df.iloc[test_idx]['Diagnosis'].values
                 knn = KNNModel(k=k)
                 knn.trainModel(X_train, y_train)
+                if self.test_data:
+                    predictions = knn.testModel(X_test)
+                    calcModel = CalculateAccuracy(y_test, predictions)
+                else:
+                    predictions = knn.testModel(X_train)
+                    calcModel = CalculateAccuracy(y_train, predictions)
                 predictions = knn.testModel(X_test)
                 calcModel = CalculateAccuracy(y_test, predictions)
                 accuracies.append(calcModel.accuracy_percentage())
@@ -91,7 +97,7 @@ class KKNSampler:
             self.k_value.append(k)
         return self.mean, self.std, self.k_value
     
-    def plot(self,normalized = True):
+    def plotModel(self,normalized = True):
         colors = ('skyblue','blue') if self.test_data else ('salmon','red')
         plt.figure(figsize=(12,6))
         # We want to plot the k vs accuracy with error bars of std deviation cionnect the mean by line
@@ -104,21 +110,12 @@ class KKNSampler:
         plt.ylabel('Accuracy (%)')
         # plt.ylim(80, 100)  
         plt.grid()
-        plt.title('Accuracy vs K value with Standard Deviation - '+'Normalized' if normalized else ' Not Normalized' + ('Test Data' if self.test_data else 'Training Data'))
+        topic = 'Accuracy vs K value with Standard Deviation on'
+        topic += ' Test Data' if self.test_data else ' Training Data'
+        topic += ' - Normalized' if normalized else ' - Not Normalized'
+        plt.title(topic)
         plt.show()
 
-        plt.figure(figsize=(12,6))
-        # We want to plot the k vs accuracy with error bars of std deviation cionnect the mean by line
-        plt.errorbar(self.k_value, self.mean, yerr=self.std, fmt='o', capsize=5
-                     ,color=colors[0], ecolor=colors[1], elinewidth=0.8, capthick=1, markersize=6)
-        plt.plot(self.k_value, self.mean, linestyle='-', marker='o',color=colors[0])
-        for i, (k,acc) in enumerate(zip(self.k_value,self.mean)):
-            plt.annotate(f'{acc:.1f}', (self.k_value[i], self.mean[i]), textcoords="offset points", xytext=(0,10), ha='center')
-        plt.xlabel('K value')
-        plt.ylabel('Accuracy (%)')
-        plt.grid()
-        plt.title('Zoomed: Accuracy vs K value with Standard Deviation - '+'Normalized' if normalized else ' Not Normalized' + ('Test Data' if self.test_data else 'Training Data'))
-        plt.show()
 
 def plotComparision(knn1:KKNSampler,knn2:KKNSampler,label1,label2,title):
         color1, color2 = ('skyblue','blue'), ('salmon','red')
@@ -141,5 +138,9 @@ def plotComparision(knn1:KKNSampler,knn2:KKNSampler,label1,label2,title):
         # plt.ylim(80, 100)  
         plt.legend()
         plt.grid()
-        plt.title('Accuracy vs K value with Standard Deviation - '+title)
+        if knn1.test_data:
+            dataset = 'Test Data'
+        else:
+            dataset = 'Training Data'
+        plt.title('Accuracy vs K value with Standard Deviation for'+dataset +'- '+title)
         plt.show()
