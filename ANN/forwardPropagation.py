@@ -35,9 +35,10 @@ class ForwardPropagation:
         self.J += instanceError
         return instanceError
     
-    def calculateAvgError(self):
-        self.J /= self.batchSize
+    def calculateAvgError(self, length):
+        self.J /= length
         reg_term = 0
         for layer in self.layers[:-1]:
             reg_term += np.sum(np.square(layer.weight[:, 1:]))
         self.J += (self.regularization / (2 * self.batchSize)) * reg_term
+        

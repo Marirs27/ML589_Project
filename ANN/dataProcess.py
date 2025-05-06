@@ -2,38 +2,29 @@ import numpy as np
 import pandas as pd
 
 class DataPreprocessor:
-    def __init__(self, filePath, labelColumn = 'label', kFold = 5, randomSeed = 42,):
+    def __init__(self, filePath, labelColumn = 'label', kFold = 5, randomSeed = 42, splice = None):
         self.kFold = kFold
         self.randomSeed = randomSeed
         self.filePath = filePath
         self.data = None
         self.labelColumn = labelColumn
+        self.splice = splice
 
     def load_data(self):
-        self.data = pd.read_csv(self.filePath)  # Load dataset with headers
+        self.data = pd.read_csv(self.filePath)
         print(f"Data loaded successfully from {self.filePath}")
-        print(f"Columns in the dataset: {self.data.columns}")
-        
-        # # Strip leading/trailing spaces from column names
-        # self.data.columns = self.data.columns.str.strip()
-        
-        # Check if the label column exists
-        if self.labelColumn not in self.data.columns:
-            raise KeyError(f"Label column '{self.labelColumn}' not found in the dataset.")
-    
+        print(f"Data shape: {self.data.shape}")
+
     def encodeCategorical(self):
-        # Encode the label column separately if it is categorical
-        if self.data[self.labelColumn].dtype == 'object' or self.data[self.labelColumn].dtype.name == 'category':
-            label_encoder = pd.get_dummies(self.data[self.labelColumn], drop_first=True)
-            self.data = self.data.drop(columns=[self.labelColumn])
-            self.data[self.labelColumn] = label_encoder
-
-        # Identify other categorical columns (excluding the label column)
-        categorical_columns = self.data.select_dtypes(include=['object', 'category']).columns
-
-        # Apply one-hot encoding to the remaining categorical columns
-        self.data = pd.get_dummies(self.data, columns=categorical_columns, drop_first=True)
-        print("Categorical variables encoded successfully")
+        # Find categorical columns (object or category dtype)
+        cat_cols = self.data.select_dtypes(include=['object', 'category']).columns
+        if len(cat_cols) == 0:
+            print("No categorical variables to encode.")
+            return
+        for col in cat_cols:
+            self.data[col] = self.data[col].astype('category').cat.codes
+        print("Categorical variables label-encoded successfully (no new columns added)")
+        print(f"Data shape after encoding: {self.data.shape}")
     
     def normalizeData(self):
         numeric_columns = self.data.select_dtypes(include=[np.number])
@@ -66,6 +57,7 @@ class DataPreprocessor:
         y_train = self.data.iloc[trainFolds][self.labelColumn].values  # Labels
         X_test = self.data.iloc[testFold].drop(columns=[self.labelColumn]).values  # Features
         y_test = self.data.iloc[testFold][self.labelColumn].values  # Labels
+        print("Train and test data split successfully")
         return X_train, y_train, X_test, y_test
 
     def printDataDetails(self):

@@ -2,6 +2,9 @@ import multiprocessing
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
+
+LABEL_NAME = 'label'
 
 def get_bootstrap_sample(data):
     return data.sample(n=len(data), replace=True)
@@ -16,7 +19,7 @@ def _get_entropy(y):
     return -np.sum(probs * np.log2(probs))
 
 def _get_info_gain(data, split_attribute):
-    label_col = 'Diagnosis'  # <-- Fixed to use last column as label
+    label_col = LABEL_NAME  # <-- Fixed to use last column as label
     dataset_entropy = _get_entropy(data[label_col])
     if pd.api.types.is_numeric_dtype(data[split_attribute]):
         return _get_numeric_info_gain(data, split_attribute, label_col, dataset_entropy)
@@ -49,7 +52,7 @@ def _get_numeric_info_gain(data, split_attribute, label_col, dataset_entropy):
     return best_gain, threshold
 
 def create_decision_tree(data, attributes, M, max_depth=None, min_sample_split=2, min_info_gain=0.0, depth=0):
-    label_col = 'Diagnosis'
+    label_col = LABEL_NAME
 
     # Base Case 1: All labels are the same
     if data[label_col].nunique() == 1:
@@ -119,7 +122,7 @@ def create_decision_tree(data, attributes, M, max_depth=None, min_sample_split=2
 def cross_validation_stratified(data, k=5, seed=19):
     np.random.seed(seed)
     data = data.sample(frac=1).reset_index(drop=True)
-    label_col = 'Diagnosis'
+    label_col = LABEL_NAME
     target = data[label_col]
     folds = [[] for _ in range(k)]
     for label in target.unique():
@@ -256,7 +259,7 @@ def hyperparameter_tuning(data, attributes):
                     accs, f1s = [], []
                     for train_df, test_df in cross_validation_stratified(data, k=5):
                         forest = fit_random_forest(train_df, attributes, ntree, min_samples_split=samples, max_depth=depth, min_info_gain=gain)
-                        y_true = test_df['label'].tolist()
+                        y_true = test_df[LABEL_NAME].tolist()
                         y_pred = [predict_random_forest(forest, row) for _, row in test_df.iterrows()]
                         acc, _, _, f1 = calculate_metrics(y_true, y_pred)
                         f1s.append(f1)
@@ -270,10 +273,21 @@ def hyperparameter_tuning(data, attributes):
                         best_params = (samples, depth, gain)
     return best_params
 
-def run_random_forest(filename, nTrees=[1, 5, 10, 20, 30, 40, 50], k=5, min_samples_split= 2, max_depth= 10, min_info_gain= 0.01):
+def run_random_forest(filename, nTrees=[5, 10, 20, 30, 40, 50], k=5, min_samples_split= 2, max_depth= 10, min_info_gain= 0.01):
     print(f"Running Random Forest on {filename}")
     data = pd.read_csv(filename)
-    label_col = 'label'
+    label_col = LABEL_NAME 
+
+    # --- Encode categorical features (excluding label) ---
+    categorical_features = data.select_dtypes(include=['object', 'category']).columns.drop(label_col, errors='ignore')
+    if len(categorical_features) > 0:
+        data = pd.get_dummies(data, columns=categorical_features, drop_first=True)
+    
+    # --- Encode label column if it's categorical ---
+    if data[label_col].dtype == 'object' or data[label_col].dtype.name == 'category':
+        le = LabelEncoder()
+        data[label_col] = le.fit_transform(data[label_col])
+
     results = {
         'nTree': [],
         'accuracy': [],
@@ -288,8 +302,8 @@ def run_random_forest(filename, nTrees=[1, 5, 10, 20, 30, 40, 50], k=5, min_samp
     for ntree in nTrees:
         accs, precs, recs, f1s = [], [], [], []
         for train_df, test_df in cross_validation_stratified(data, k):
-            features = [col for col in train_df.columns if col != 'label']
-            target = 'Diagnosis'
+            features = [col for col in train_df.columns if col != LABEL_NAME]
+            target = LABEL_NAME
             forest = fit_random_forest(train_df, attributes=features, ntree=ntree, min_samples_split=min_samples_split, max_depth=max_depth, min_info_gain=min_info_gain)
             y_true = test_df[target].tolist()
             y_pred = [predict_random_forest(forest, row) for _, row in test_df.iterrows()]
@@ -314,7 +328,6 @@ def run_random_forest(filename, nTrees=[1, 5, 10, 20, 30, 40, 50], k=5, min_samp
 if __name__ == "__main__":
     # df = pd.read_csv("Random Forest2/raisin.csv")
     # hyperparameter_tuning(df,attributes=df.columns[:-1])
-    run_random_forest("datasets/parkinsons.csv")  
-    # run_random_forest("wdbc.csv")  
-    # run_random_forest("raisin.csv")  
-    # run_random_forest("titanic.csv")
+    # run_random_forest("datasets/credit_approval.csv")  
+    # run_random_forest("datasets/parkinsons.csv")  
+    run_random_forest("datasets/rice.csv")

@@ -1,8 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import confusion_matrix as sk_confusion_matrix
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 def calculateAccuracy(test, pred):
     correct_predictions = np.sum(np.array(test) == np.array(pred))
