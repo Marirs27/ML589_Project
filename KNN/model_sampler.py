@@ -71,6 +71,7 @@ class KKNSampler:
         y = self.df['Diagnosis'].values  # or whatever your label column is called
         folds = stratified_kfold_indices(y, k=k_folds, seed=42)
         for k in self.k_range:
+            print("Running K=",k)
             accuracies = []
             for fold_idx in range(k_folds):
                 test_idx = folds[fold_idx]

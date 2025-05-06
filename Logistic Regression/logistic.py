@@ -1,9 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.metrics import roc_curve, auc
 from sklearn.datasets import load_iris, fetch_openml
+from sklearn import datasets
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+# from sklearn.preprocessing import LabelEncoder
+# from skimage.transform import resize
+
+
+# Set Seaborn style and palette globally
+sns.set(style="whitegrid")
+palette = sns.color_palette("muted")
+sns.set_palette(palette)
+sns.set_palette("Set2")
 
 def min_max_normalize(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0) + 1e-8)
@@ -44,6 +55,12 @@ class LogisticRegressionScratch:
             yield X[batch_idx], y[batch_idx]
 
     def fit(self, X_train, y_train, X_val=None, y_val=None):
+        X_train = np.asarray(X_train)
+        y_train = np.asarray(y_train)
+        if X_val is not None:
+            X_val = np.asarray(X_val)
+            y_val = np.asarray(y_val)
+
         m, n = X_train.shape
         self.is_binary = len(np.unique(y_train)) == 2
 
@@ -95,6 +112,7 @@ class LogisticRegressionScratch:
                 print(f"Epoch {epoch} | Train Loss: {self.train_loss_history[-1]:.4f}")
 
     def predict(self, X):
+        X = np.asarray(X)  # Ensure X is a numpy array
         if self.is_binary:
             probs = self._sigmoid(X.dot(self.W) + self.b)
             return (probs > 0.5).astype(int).flatten()
@@ -103,32 +121,46 @@ class LogisticRegressionScratch:
             return np.argmax(probs, axis=1)
 
     def predict_proba(self, X):
+        X = np.asarray(X)  # Ensure X is a numpy array
         if self.is_binary:
             return self._sigmoid(X.dot(self.W) + self.b).flatten()
         else:
             return self._softmax(X.dot(self.W) + self.b)
         
     def plot_loss(self):
-        plt.plot(self.train_loss_history, label='Train Loss')
+        plt.figure(figsize=(8, 5))
+        plt.plot(self.train_loss_history, label='Train Loss', color=palette[0])  # Orange
         if self.test_loss_history:
-            plt.plot(self.test_loss_history, label='Test Loss')
+            plt.plot(self.test_loss_history, label='Test Loss', color=palette[1])  # Green
         plt.xlabel("Epoch")
         plt.ylabel("Loss")
         plt.title("Loss vs Epochs")
         plt.legend()
         plt.grid()
+        # Annotate final values in orange and green
+        if self.train_loss_history:
+            plt.annotate(f"{self.train_loss_history[-1]:.4f}", 
+                         (len(self.train_loss_history)-1, self.train_loss_history[-1]), 
+                         color=palette[0], fontsize=10, fontweight='bold')
+        if self.test_loss_history:
+            plt.annotate(f"{self.test_loss_history[-1]:.4f}", 
+                         (len(self.test_loss_history)-1, self.test_loss_history[-1]), 
+                         color=palette[1], fontsize=10, fontweight='bold')
         plt.show()
 
     def plot_roc_curve(self, y_true, y_probs):
         fpr, tpr, thresholds = roc_curve(y_true, y_probs)
         roc_auc = auc(fpr, tpr)
-        plt.plot(fpr, tpr, label=f"AUC = {roc_auc:.4f}")
-        plt.plot([0, 1], [0, 1], '--', color='gray')
+        plt.figure(figsize=(8, 5))
+        plt.plot(fpr, tpr, label=f"AUC = {roc_auc:.4f}", color=palette[0])  # Orange
+        plt.plot([0, 1], [0, 1], '--', color=palette[1])  # Green dashed
         plt.xlabel("False Positive Rate")
         plt.ylabel("True Positive Rate")
         plt.title("ROC Curve")
         plt.legend()
         plt.grid()
+        # Annotate AUC in orange
+        plt.annotate(f"AUC = {roc_auc:.4f}", xy=(0.6, 0.05), color=palette[0], fontsize=12, fontweight='bold')
         plt.show()
 
 
@@ -138,12 +170,65 @@ def run_on_iris():
     y = iris.target
     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
 
-    model = LogisticRegressionScratch(learning_rate=0.5, num_iter=1000, batch_size=32, verbose=True)
+    model = LogisticRegressionScratch(learning_rate=0.1, num_iter=1000, batch_size=32, verbose=True)
     model.fit(X_train, y_train, X_test, y_test)
     preds = model.predict(X_test)
     acc = np.mean(preds == y_test)
     print(f"Iris Accuracy: {acc:.4f}")
     model.plot_loss()
 
+
+def run_kuzushiji_mnist():
+    kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1)
+    X = kuzushiji.data.astype(float)
+    y = kuzushiji.target.astype(int)
+    X = min_max_normalize(X)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
+    model = LogisticRegressionScratch(
+        learning_rate=0.01, 
+        num_iter=500, 
+        batch_size=128, 
+        reg_lambda=0.001, 
+        verbose=True
+    )
+    model.fit(X_train, y_train, X_test, y_test)
+    preds = model.predict(X_test)
+    acc = np.mean(preds == y_test)
+    print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}")
+    model.plot_loss()
+
+def run_digits_mnist():
+    digits = datasets.load_digits(return_X_y=True)
+    X = min_max_normalize(digits[0])
+    y = digits[1]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
+    model = LogisticRegressionScratch(learning_rate=0.1, num_iter=1000, batch_size=32, verbose=True)
+    model.fit(X_train, y_train, X_test, y_test)
+    preds = model.predict(X_test)
+    acc = np.mean(preds == y_test)
+    print(f"Digits Accuracy: {acc:.4f}")
+    model.plot_loss()
+
+def run_kuzushiji_mnist():
+    kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1)
+    X = kuzushiji.data.astype(float)
+    y = kuzushiji.target.astype(int)
+    X = min_max_normalize(X)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
+    model = LogisticRegressionScratch(
+        learning_rate=0.01, 
+        num_iter=300, 
+        batch_size=28, 
+        reg_lambda=0.01, 
+        verbose=True
+    )
+    model.fit(X_train, y_train, X_test, y_test)
+    preds = model.predict(X_test)
+    acc = np.mean(preds == y_test)
+    print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}")
+    model.plot_loss()
+
+
 if __name__ == "__main__":
-    run_on_iris()
+    run_kuzushiji_mnist()
+    # run_digits_mnist()
