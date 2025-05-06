@@ -19,9 +19,6 @@ accuracy= [80.493, 79.233, 79.654, 78.804]  # Interpolated 0.025 from table rows
 # F1 Score values
 f1_score= [72.675, 72.028, 72.18, 71.682]
 
-
-
-
 # Regularization values (final)
 step_sizes = [0.05, 0.025, 0.1, 0.5, 1]
 
