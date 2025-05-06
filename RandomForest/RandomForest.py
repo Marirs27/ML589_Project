@@ -257,7 +257,7 @@ def hyperparameter_tuning(data, attributes):
             for gain in min_info_gains:
                 for ntree in n_tree:
                     accs, f1s = [], []
-                    for train_df, test_df in cross_validation_stratified(data, k=5):
+                    for train_df, test_df in cross_validation_stratified(data, k=10):
                         forest = fit_random_forest(train_df, attributes, ntree, min_samples_split=samples, max_depth=depth, min_info_gain=gain)
                         y_true = test_df[LABEL_NAME].tolist()
                         y_pred = [predict_random_forest(forest, row) for _, row in test_df.iterrows()]
