@@ -68,7 +68,7 @@ class DataPreprocessor:
             print(f"\tFold {i+1}: {len(fold)} samples")
 
 if __name__ == "__main__":
-    preprocessor = DataPreprocessor(filePath='ANN/datasets/raisin.csv')
+    preprocessor = DataPreprocessor(filePath='datasets/credit_approval.csv')
     preprocessor.load_data()
     preprocessor.encodeCategorical()
     preprocessor.normalizeData()
