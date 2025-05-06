@@ -6,11 +6,22 @@ from KNN_Instance import KNNModel
 from calculate_accuracy import CalculateAccuracy
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn import datasets
 
-file_path = 'datasets/rice.csv'
+file_path = 'datasets/parkinsons.csv'
 df = pd.read_csv(file_path, header=None)
 
-# Assign column names dynamically
+# Load the digits dataset
+digits = datasets.load_digits(return_X_y=True)
+digits_dataset_X = digits[0]
+digits_dataset_y = digits[1]
+N = len(digits_dataset_X)
+data = pd.DataFrame(digits_dataset_X, columns=[f'pixel_{i}' for i in range(digits_dataset_X.shape[1])])
+data['label'] = digits_dataset_y
+df =data.copy()
+
+
+
 num_columns = df.shape[1]
 column_names = [f"feature{i}" for i in range(num_columns - 1)] + ["Diagnosis"]
 df.columns = column_names
@@ -19,9 +30,9 @@ df.columns = column_names
 wbdcProcessor = PreProcesser(df)
 wbdcAnalyser = Analyser(df)
 # knnSamplerTrainN = KKNSampler(df,k_range=range(10, 30, 2), test_data=False, sampling_runs=20)
-knnSamplerTestN = KKNSampler(df,k_range=range(10, 30, 2), test_data=True, sampling_runs=20)
-# knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20,normalized=False)
-# knnSamplerTest = KKNSampler(df,k_range=range(1, 52, 2), test_data=True, sampling_runs=20,normalized=False)
+# knnSamplerTestN = KKNSampler(df,k_range=range(10, 30, 2), test_data=True, sampling_runs=20)
+# knnSamplerTrain = KKNSampler(df,k_range=range(1, 12, 2), test_data=False, sampling_runs=20,normalized=False)
+knnSamplerTest = KKNSampler(df,k_range=range(1, 12, 2), test_data=True, sampling_runs=20,normalized=False)
 
 '''
     Data Analysing
@@ -38,16 +49,16 @@ knnSamplerTestN = KKNSampler(df,k_range=range(10, 30, 2), test_data=True, sampli
 # Run sampler for Normalized data
 # knnSamplerTrainN.run()
 # knnSamplerTrainN.plot()
-knnSamplerTestN.run()
-knnSamplerTestN.plot()
+# knnSamplerTestN.run()
+# knnSamplerTestN.plot()
 
-# # Run sampler for Non-Normalized data
+# Run sampler for Non-Normalized data
 # knnSamplerTrain.run()
 # knnSamplerTrain.plot(False)
-# knnSamplerTest.run()
-# knnSamplerTest.plot(False)
+knnSamplerTest.run()
+knnSamplerTest.plot(False)
 
 
-plotComparision(knnSamplerTestN,knnSamplerTest,
-                'With Normalization', 'Without Normalization',
-                'Comparing with and without normalizing test data')
+# plotComparision(knnSamplerTestN,knnSamplerTest,
+#                 'With Normalization', 'Without Normalization',
+#                 'Comparing with and without normalizing test data')
