@@ -51,6 +51,13 @@ def plotConfusionMatrix(test,pred,labels,title="Confusion Matrix"):
     plt.title(title)
     plt.show()
 
+def calculateFPR(test, pred, labels, pos_class_index=1):
+    cm = confusion_matrix(test, pred, labels)
+    fp = np.sum(cm[:, pos_class_index]) - cm[pos_class_index, pos_class_index]
+    tn = np.sum(cm) - (np.sum(cm[pos_class_index, :]) + np.sum(cm[:, pos_class_index]) - cm[pos_class_index, pos_class_index])
+    fpr = fp / (fp + tn) if (fp + tn) > 0 else 0
+    return round(fpr * 100, 2)
+
 
 def plotAccuracy(accuracy):
     plt.figure(figsize=(10, 7))

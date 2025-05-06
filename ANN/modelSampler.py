@@ -91,8 +91,9 @@ class ModelSampler:
             modelDecEpoch.append(findMonotonicDecreaseEpoch(loss))
 
             print("acc:",model.finalModalAccuracy, "f1: ", model.finalModalF1Score)
+            print("TPR: ", model.finalTPR, "FPR: ", model.finalFPR)
 
-            plotLearningCurveLoss(loss, title="Model Learning Curve of {} with architecture {} regularization={}, stepSize={}, batchSize={}".format(self.filePath.split('/')[1],l,regularization, stepSize, batchSize))
+            # plotLearningCurveLoss(loss, title="Model Learning Curve of {} with architecture {} regularization={}, stepSize={}, batchSize={}".format(self.filePath.split('/')[1],l,regularization, stepSize, batchSize))
             # plotLearningCurve(accLC, f1LC, preLC, recLC, title="Model Learning Curve of {} with architecture {} regularization={}, stepSize={}, batchSize={}".format(self.filePath.split('/')[2],l,regularization, stepSize, batchSize))
             
 

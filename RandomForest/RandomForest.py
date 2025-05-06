@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
+from sklearn import datasets
 
 LABEL_NAME = 'label'
 
@@ -330,4 +331,15 @@ if __name__ == "__main__":
     # hyperparameter_tuning(df,attributes=df.columns[:-1])
     # run_random_forest("datasets/credit_approval.csv")  
     # run_random_forest("datasets/parkinsons.csv")  
-    run_random_forest("datasets/rice.csv")
+    digits = datasets.load_digits(return_X_y=True)
+    digits_dataset_X = digits[0]
+    digits_dataset_y = digits[1]
+    data = pd.DataFrame(digits_dataset_X, columns=[f'pixel_{i}' for i in range(digits_dataset_X.shape[1])])
+    data['label'] = digits_dataset_y
+    # Save to CSV
+    data.to_csv("digits.csv", index=False)
+
+    # Now run your random forest on this file
+    run_random_forest("digits.csv")
+    # run_random_forest("datasets/rice.csv")
+

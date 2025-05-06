@@ -1,5 +1,5 @@
 import numpy as np
-from calculateAcuracy import calculateAccuracy, calculatePrecision, calculateRecall, calculateF1Score
+from calculateAcuracy import calculateAccuracy, calculateFPR, calculatePrecision, calculateRecall, calculateF1Score
 from layer import Layer
 from dataProcess import DataPreprocessor
 from forwardPropagation import ForwardPropagation
@@ -26,6 +26,8 @@ class TrainModel:
 
         self.finalModalAccuracy = 0
         self.finalModalF1Score = 0
+        self.finalTPR = 0
+        self.finalFPR = 0
 
     def getEpoch(self):
         # Calculate the total length of the first k-1 folds
@@ -68,7 +70,7 @@ class TrainModel:
         epochLosses = np.zeros(self.epoch, dtype=np.float64)
 
         for k in range(self.preprocessor.kFold):
-            print(f"\nTraining on fold {k + 1}")
+            # print(f"\nTraining on fold {k + 1}")
             X_train, y_train, X_test, y_test = self.preprocessor.getTrainTestSplit(k)
 
             # Initialize metrics for this fold
@@ -87,7 +89,7 @@ class TrainModel:
                             self.trainEpoch(X_train_batch, y_train_batch)
                         # Testing per epoch
                         loss = self.forwardPropagation.J
-                        acc, pre, rec, f1, lossx = self.testModel(X_test, y_test)
+                        acc, pre, rec, f1, _, _ = self.testModel(X_test, y_test)
                         foldEpochAccuracy.append(acc)
                         foldEpochPrecision.append(pre)
                         foldEpochRecall.append(rec)
@@ -148,13 +150,15 @@ class TrainModel:
                     epochF1Scores += np.array(foldEpochF1Score)
                     epochLosses += np.array(foldEpochLoss)
                 
-            finACC, _, _, finF1, _ = self.testModel(X_test, y_test)
+            finACC, _, finTPR, finF1, _, finFPR = self.testModel(X_test, y_test)
             self.finalModalAccuracy += finACC
             self.finalModalF1Score += finF1
+            self.finalTPR += finTPR
+            self.finalFPR += finFPR
                     
             
-            print(f"Testing on fold {k + 1} completed")
-            print("--------------------------------------------------------")
+            # print(f"Testing on fold {k + 1} completed")
+            # print("--------------------------------------------------------")
 
         # Take the average of metrics across all folds for each epoch
         epochAccuracies /= self.preprocessor.kFold
@@ -179,6 +183,8 @@ class TrainModel:
             # print(index, epochLosses[:index], epochLosses)
             self.finalModalAccuracy /= self.preprocessor.kFold
             self.finalModalF1Score /= self.preprocessor.kFold
+            self.finalTPR /= self.preprocessor.kFold
+            self.finalFPR /= self.preprocessor.kFold
             return epochAccuracies[:index], epochPrecisions[:index], epochRecalls[:index], epochF1Scores[:index], epochLosses[:index]
 
         # Print final metrics
@@ -189,6 +195,8 @@ class TrainModel:
 
         self.finalModalAccuracy /= self.preprocessor.kFold
         self.finalModalF1Score /= self.preprocessor.kFold
+        self.finalTPR /= self.preprocessor.kFold
+        self.finalFPR /= self.preprocessor.kFold
         return epochAccuracies, epochPrecisions, epochRecalls, epochF1Scores, epochLosses
 
     def trainEpoch(self, X_train, y_train):
@@ -231,8 +239,9 @@ class TrainModel:
         precision = calculatePrecision(y_test, y_pred_binary, labels=[0, 1])
         recall = calculateRecall(y_test, y_pred_binary, labels=[0, 1])
         f1 = calculateF1Score(y_test, y_pred_binary, labels=[0, 1])
+        fpr = calculateFPR(y_test, y_pred_binary, labels=[0, 1])
 
-        return accuracy, precision, recall, f1, self.forwardPropagation.J
+        return accuracy, precision, recall, f1, self.forwardPropagation.J, fpr
 
 
 def plotLearningCurveLoss(loss, title="Model Learning Curve"):
