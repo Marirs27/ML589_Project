@@ -22,13 +22,13 @@ import pandas as pd
 
 
 WDBC_LAYERS_SKELETON = [[20,1], [30,8,4,2,1], [15, 22, 1], [18,20,18,1]]   #[16,4,8,1],[30,8,4,2,1],
-LOAN_LAYERS_SKELETON = [[5,1], [12,1],[5, 10, 1], [10,5,8,1],
+LOAN_LAYERS_SKELETON = [[4,8,16,1],[5, 10, 1], [10,5,8,1],
                           [16, 8, 1],  # 2 Hidden Layers
          [4, 8, 16, 1],  # 3 Hidden Layers
          [4, 8, 16, 8, 1] ]
 
 TITANIC_LAYERS_SKELETON = [[20,1], [8,1],[8,4,2,1]]
-RAISIN_LAYERS_SKELETON =  [[1], [5,1],[10, 8, 1],[10, 16, 8, 4, 1],[10, 8, 6, 8, 1]]
+RAISIN_LAYERS_SKELETON =  [[10, 8, 1],[10, 16, 8, 4, 1],[10, 8, 6, 8, 1]]
 class ModelSampler:
     EPSILON = 1e-6
     REGULARIZATION_VALUES = [0.01,0.025]
@@ -37,9 +37,9 @@ class ModelSampler:
     K_FOLD = 10
     EPOCHS = 100
     
-    def __init__(self, filePath, splice = None):
+    def __init__(self, filePath, splice = None, labelC = 'Diagnosis'):
         self.filePath = filePath
-        self.preprocessor = DataPreprocessor(filePath=filePath, kFold=self.K_FOLD, splice = None, randomSeed=42)
+        self.preprocessor = DataPreprocessor(filePath=filePath, kFold=self.K_FOLD, splice = None, randomSeed=42, labelColumn=labelC)
         self.preprocessor.load_data()
         self.preprocessor.encodeCategorical()
         self.preprocessor.normalizeData()
@@ -53,7 +53,8 @@ class ModelSampler:
         self.recall = []
 
 
-    def sampleModels(self, layerSkeleton, regularization=0.01, stepSize=0.01, batchSize=10, thresholdValue=0.5, stoppingCriterionCategory='epochs'):
+    def sampleModels(self, layerSkeleton, regularization=0.01, stepSize=0.01, 
+                     batchSize=10, thresholdValue=0.5, stoppingCriterionCategory='epochs'):
         # Store all the models and their metrics to plot
         accuracy = []
         f1Score = []
@@ -100,7 +101,7 @@ class ModelSampler:
         # Plot the metrics
         # print("acc",modelAccuracy, modelF1Score)
         # saveFileValuesCSV(fileName="ANN/outputs/metrics/{}_model_regularization_{}_stepSize_{}_batchSize_{}.csv".format(self.filePath.split('/')[2],regularization, stepSize, batchSize, stoppingCriterionCategory), F1=modelF1Score, Accuracy=modelAccuracy, Loss=modelDecEpoch, models=models)
-        # plotMetrics(modelAccuracy, modelF1Score,  models, title="Model Performance of {} with regularization={}, stepSize={}, batchSize={}".format(self.filePath.split('/')[2],regularization, stepSize, batchSize))
+        plotMetrics(modelAccuracy, modelF1Score,  models, title="Model Performance of {} with regularization={}, stepSize={}, batchSize={}".format(self.filePath.split('/')[1],regularization, stepSize, batchSize))
         print("Model sampling completed successfully")
 
 
@@ -244,18 +245,18 @@ def plotMetrics(accuracy, f1Score, models:TrainModel, title="Model Performance")
 
 if __name__ == "__main__":
     layerSkeletons = [
-        [4, 8, 1], [16, 8, 1],  # 2 Hidden Layers
-        [2, 4, 8, 1], [4, 8, 16, 1],  # 3 Hidden Layers
+         [16, 8, 1],  # 2 Hidden Layers
+       [4, 8, 16, 1],  # 3 Hidden Layers
         [2, 4, 8, 16, 1], [4, 8, 16, 8, 1]  # 4 Hidden Layers
     ]
-    # modelSampler = ModelSampler(filePath='ANN/datasets/loan.csv')
+    # modelSampler = ModelSampler(filePath='datasets/parkinsons.csv',labelC='Diagnosis')
     # for reg in modelSampler.REGULARIZATION_VALUES:
     #     for step in modelSampler.STEP_SIZE_VALUES:
     #         for batch in modelSampler.BATCH_SIZE_VALUES:
     #             print(f"Sampling models with regularization={reg}, stepSize={step}, batchSize={batch}")
-    #             # layerSkeletons.extend(LOAN_LAYERS_SKELETON) 
+    #             layerSkeletons.extend(LOAN_LAYERS_SKELETON) 
     #             modelSampler.sampleModels(
-    #                 layerSkeleton=LOAN_LAYERS_SKELETON,
+    #                 layerSkeleton=[[16, 8, 1]],
     #                 regularization=reg,
     #                 stepSize=step,
     #                 batchSize=batch,
@@ -263,10 +264,11 @@ if __name__ == "__main__":
     #             )
     #             print("Model sampling completed successfully")
 
-    modelSampler = ModelSampler(filePath='datasets/credit_approval.csv')
+    layerSkeletons.extend(WDBC_LAYERS_SKELETON) 
+    modelSampler = ModelSampler(filePath='datasets/rice.csv',labelC='label')
     modelSampler.EPOCHS = 100
     modelSampler.sampleModels(
-        layerSkeleton=WDBC_LAYERS_SKELETON,
+        layerSkeleton=layerSkeletons,
         regularization=0.027,
         stepSize=0.05,
         batchSize=25,
@@ -292,7 +294,7 @@ if __name__ == "__main__":
     #     modelSampler.sampleModels(
     #         layerSkeleton=[[16, 8, 1]],
     #         regularization=reg,
-    #         stepSize=0.01,
+    #         stepSize=0.05,
     #         batchSize=32,
     #         stoppingCriterionCategory='epochs'
     #     )

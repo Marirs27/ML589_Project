@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 class DataPreprocessor:
-    def __init__(self, filePath, labelColumn = 'label', kFold = 5, randomSeed = 42, splice = None):
+    def __init__(self, filePath, labelColumn = 'Diagnosis', kFold = 5, randomSeed = 42, splice = None):
         self.kFold = kFold
         self.randomSeed = randomSeed
         self.filePath = filePath

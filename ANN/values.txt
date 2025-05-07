@@ -1,0 +1,55 @@
+Credit:
+Model with layers [15, 16, 8, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 86.776 f1:  86.30699999999999
+TPR:  91.556 FPR:  17.19
+
+Model with layers [15, 4, 8, 16, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 86.75 f1:  86.24199999999999
+TPR:  91.213 FPR:  16.952
+
+Model with layers [15, 2, 4, 8, 16, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 86.177 f1:  85.64599999999999
+TPR:  90.583 FPR:  17.476999999999997
+
+Model with layers [15, 4, 8, 16, 8, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 85.838 f1:  85.442
+TPR:  91.21199999999999 FPR:  18.618000000000002
+
+Model with layers [15, 12, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 86.62 f1:  86.39099999999999
+TPR:  93.28 FPR:  18.904
+
+Model with layers [15, 5, 10, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 86.62 f1:  86.11799999999998
+TPR:  91.213 FPR:  17.189999999999998
+
+Model with layers [15, 10, 5, 8, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 86.333 f1:  85.73799999999999
+TPR:  90.23799999999999 FPR:  16.904
+
+Model with layers [15, 16, 8, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 87.21900000000001 f1:  86.839
+TPR:  92.59100000000001 FPR:  17.237000000000002
+
+Model with layers [15, 4, 8, 16, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 84.457 f1:  83.457
+TPR:  87.479 FPR:  18.048
+______________________________________________________________________________________________________________________
+Parkinson:
+Best: 
+Model with layers [22, 16, 8, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+
+______________________________________________________________________________________________________________________
+Rice:
+
+Model with layers [7, 16, 8, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 91.49699999999999 f1:  92.86999999999999
+TPR:  96.65299999999999 FPR:  15.398999999999997
+
+Model with layers [7, 4, 8, 16, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+acc: 90.997 f1:  92.50800000000001
+TPR:  96.973 FPR:  16.993
+
+Model with layers [7, 2, 4, 8, 16, 1], regularization 0.027, batch size 25, step size 0.05 created successfully
+
+

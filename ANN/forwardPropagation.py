@@ -41,4 +41,18 @@ class ForwardPropagation:
         for layer in self.layers[:-1]:
             reg_term += np.sum(np.square(layer.weight[:, 1:]))
         self.J += (self.regularization / (2 * self.batchSize)) * reg_term
+
+    # Add this to your ForwardPropagation or TrainModel class
+    def get_hidden_activations(self, X, layer_idx=-2):
+        """
+        Returns activations from the specified hidden layer.
+        layer_idx=-2 gets the last hidden layer (before output).
+        """
+        a = X.T
+        for i, layer in enumerate(self.layers):
+            z = np.dot(layer.weight, a) + layer.bias
+            a = layer.activation(z)
+            if i == layer_idx:
+                return a.T  # shape: (n_samples, n_units)
+        return a.T
         

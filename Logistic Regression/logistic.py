@@ -1,20 +1,26 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import f1_score, roc_curve, auc, accuracy_score
 from sklearn.datasets import load_iris, fetch_openml
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelEncoder
-# from sklearn.preprocessing import LabelEncoder
-# from skimage.transform import resize
 
+import seaborn as sns
+sns.set(style="whitegrid", palette="Set2")
+palette = sns.color_palette("Set2")
 
-# Set Seaborn style and palette globally
-sns.set(style="whitegrid")
-palette = sns.color_palette("muted")
-sns.set_palette(palette)
-sns.set_palette("Set2")
+def encode_categorical(X, y=None):
+    import pandas as pd
+    from sklearn.preprocessing import LabelEncoder
+
+    X_df = pd.DataFrame(X)
+    for col in X_df.select_dtypes(include=['object', 'category']).columns:
+        le = LabelEncoder()
+        X_df[col] = le.fit_transform(X_df[col])
+    if y is not None and (y.dtype == 'object' or str(y.dtype).startswith('category')):
+        y = LabelEncoder().fit_transform(y)
+    return X_df.values, y
 
 def min_max_normalize(X):
     return (X - X.min(axis=0)) / (X.max(axis=0) - X.min(axis=0) + 1e-8)
@@ -127,25 +133,17 @@ class LogisticRegressionScratch:
         else:
             return self._softmax(X.dot(self.W) + self.b)
         
-    def plot_loss(self):
+    def plot_loss(self,lr, batch_size, acc, f1):
         plt.figure(figsize=(8, 5))
         plt.plot(self.train_loss_history, label='Train Loss', color=palette[0])  # Orange
         if self.test_loss_history:
             plt.plot(self.test_loss_history, label='Test Loss', color=palette[1])  # Green
         plt.xlabel("Epoch")
         plt.ylabel("Loss")
-        plt.title("Loss vs Epochs")
+        plt.title("Loss vs Epochs with Learning Rate: {} and Batch Size: {}".format(lr, batch_size)+
+                  f"\nAccuracy: {acc:.4f}, F1 Score: {f1:.4f}")    
         plt.legend()
         plt.grid()
-        # Annotate final values in orange and green
-        if self.train_loss_history:
-            plt.annotate(f"{self.train_loss_history[-1]:.4f}", 
-                         (len(self.train_loss_history)-1, self.train_loss_history[-1]), 
-                         color=palette[0], fontsize=10, fontweight='bold')
-        if self.test_loss_history:
-            plt.annotate(f"{self.test_loss_history[-1]:.4f}", 
-                         (len(self.test_loss_history)-1, self.test_loss_history[-1]), 
-                         color=palette[1], fontsize=10, fontweight='bold')
         plt.show()
 
     def plot_roc_curve(self, y_true, y_probs):
@@ -160,54 +158,75 @@ class LogisticRegressionScratch:
         plt.legend()
         plt.grid()
         # Annotate AUC in orange
-        plt.annotate(f"AUC = {roc_auc:.4f}", xy=(0.6, 0.05), color=palette[0], fontsize=12, fontweight='bold')
+        # plt.annotate(f"AUC = {roc_auc:.4f}", xy=(0.6, 0.05), color=palette[0], fontsize=12, fontweight='bold')
         plt.show()
 
 
-def run_on_iris():
-    iris = load_iris()
-    X = min_max_normalize(iris.data)
-    y = iris.target
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
-
-    model = LogisticRegressionScratch(learning_rate=0.1, num_iter=1000, batch_size=32, verbose=True)
-    model.fit(X_train, y_train, X_test, y_test)
-    preds = model.predict(X_test)
-    acc = np.mean(preds == y_test)
-    print(f"Iris Accuracy: {acc:.4f}")
-    model.plot_loss()
-
-
-def run_kuzushiji_mnist():
-    kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1)
-    X = kuzushiji.data.astype(float)
-    y = kuzushiji.target.astype(int)
+def run_on_rice(encode=True):
+    import pandas as pd
+    rice = pd.read_csv("datasets/rice.csv")
+    y = rice['label'].values
+    X = rice.drop(columns=['label']).values
+    if encode:
+        X, y = encode_categorical(X, y)
     X = min_max_normalize(X)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
-    model = LogisticRegressionScratch(
-        learning_rate=0.01, 
-        num_iter=500, 
-        batch_size=128, 
-        reg_lambda=0.001, 
-        verbose=True
-    )
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=12)
+    model = LogisticRegressionScratch(learning_rate=0.07, num_iter=300, batch_size=32, verbose=True)
     model.fit(X_train, y_train, X_test, y_test)
     preds = model.predict(X_test)
-    acc = np.mean(preds == y_test)
-    print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}")
-    model.plot_loss()
+    acc = accuracy_score(y_test, preds)
+    f1 = f1_score(y_test, preds, average='binary')
+    print(f"Rice Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
+    model.plot_loss(lr=0.05, batch_size=32, acc=acc, f1=f1)
+    model.plot_roc_curve(y_test, model.predict_proba(X_test))
+
+def run_on_parkinsons(encode=True):
+    import pandas as pd
+    parkinsons = pd.read_csv("datasets/parkinsons.csv")
+    y = parkinsons['Diagnosis'].values
+    X = parkinsons.drop(columns=['Diagnosis']).values
+    if encode:
+        X, y = encode_categorical(X, y)
+    X = min_max_normalize(X)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=12)
+    model = LogisticRegressionScratch(learning_rate=0.5, num_iter=1000, batch_size=52, verbose=True)
+    model.fit(X_train, y_train, X_test, y_test)
+    preds = model.predict(X_test)
+    acc = accuracy_score(y_test, preds)
+    f1 = f1_score(y_test, preds, average='binary')
+    print(f"Parkinsons Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
+    model.plot_loss(lr=0.05, batch_size=32, acc=acc, f1=f1)
+    model.plot_roc_curve(y_test, model.predict_proba(X_test))
+
+def run_on_credit(encode=True):
+    import pandas as pd
+    credit_approval = pd.read_csv("datasets/credit_approval.csv")
+    y = credit_approval['label'].values
+    X = credit_approval.drop(columns=['label']).values
+    if encode:
+        X, y = encode_categorical(X, y)
+    X = min_max_normalize(X)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=12)
+    model = LogisticRegressionScratch(learning_rate=0.5, num_iter=1000, batch_size=52, verbose=True)
+    model.fit(X_train, y_train, X_test, y_test)
+    preds = model.predict(X_test)
+    acc = accuracy_score(y_test, preds)
+    f1 = f1_score(y_test, preds, average='binary')
+    print(f"Credit Approval Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
+    model.plot_loss(lr=0.05, batch_size=32, acc=acc, f1=f1)
+    model.plot_roc_curve(y_test, model.predict_proba(X_test))
 
 def run_digits_mnist():
     digits = datasets.load_digits(return_X_y=True)
     X = min_max_normalize(digits[0])
     y = digits[1]
     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
-    model = LogisticRegressionScratch(learning_rate=0.1, num_iter=1000, batch_size=32, verbose=True)
+    model = LogisticRegressionScratch(learning_rate=0.05, num_iter=1000, batch_size=32, verbose=True)
     model.fit(X_train, y_train, X_test, y_test)
     preds = model.predict(X_test)
     acc = np.mean(preds == y_test)
     print(f"Digits Accuracy: {acc:.4f}")
-    model.plot_loss()
+    model.plot_loss(lr=0.1, batch_size=32)
 
 def run_kuzushiji_mnist():
     kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1)
@@ -226,9 +245,11 @@ def run_kuzushiji_mnist():
     preds = model.predict(X_test)
     acc = np.mean(preds == y_test)
     print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}")
-    model.plot_loss()
+    model.plot_loss(lr=0.01, batch_size=28)
 
 
 if __name__ == "__main__":
-    run_kuzushiji_mnist()
+    # run_kuzushiji_mnist()
     # run_digits_mnist()
+    # run_on_parkinsons()
+    run_on_credit()
