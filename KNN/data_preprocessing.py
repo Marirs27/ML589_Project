@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.utils import shuffle
 
 class PreProcesser:
     def __init__(self, data=None, normalized=True):
@@ -10,14 +11,42 @@ class PreProcesser:
         self.normalized = normalized
 
     def setData(self):
-        print("DataFrame Columns:\n", self.data.columns)
-        # self.data = sklearn_shuffle(self.data);, "label" is the y col seperate data based on col
+        # print("DataFrame Columns:\n", self.data.columns)
+        self.data = shuffle(self.data, random_state=10)
         self.y = self.data["Diagnosis"].values
         self.X = self.data.drop("Diagnosis", axis=1).values
         
     def split(self,testPercent=20, random_state=None):
         return train_test_split(self.X,self.y, test_size=testPercent/100, random_state=random_state,shuffle=True)
 
+    # def normalize(self):
+    #     if self.normalized:
+    #         # Convert self.X to a DataFrame for processing
+    #         self.X = pd.DataFrame(self.X)
+            
+    #         # Identify categorical columns (non-numeric)
+    #         categorical_columns = self.X.select_dtypes(include=['object', 'category']).columns
+            
+    #         # Apply OneHotEncoder to categorical columns
+    #         if not categorical_columns.empty:
+    #             encoder = OneHotEncoder(sparse_output=False)  # Use dense output
+    #             encoded = encoder.fit_transform(self.X[categorical_columns])
+    #             encoded_df = pd.DataFrame(encoded, index=self.X.index)
+                
+    #             # Drop original categorical columns and concatenate encoded columns
+    #             self.X = pd.concat([self.X.drop(columns=categorical_columns), encoded_df], axis=1)
+                
+    #         self.data = pd.concat([self.X, pd.Series(self.y, name='Diagnosis')], axis=1)
+            
+    #         # # Ensure all data in self.X is numeric
+    #         # self.X = self.X.apply(pd.to_numeric, errors='coerce')
+            
+    #         # # Check for NaN values and fill them with 0
+    #         # self.X = self.X.fillna(0)
+            
+    #         # # Perform normalization
+    #         # self.X = (self.X - self.X.min()) / (self.X.max() - self.X.min())
+    #         # self.X = self.X.to_numpy()
     def normalize(self):
         if self.normalized:
             # Convert self.X to a DataFrame for processing
@@ -26,25 +55,15 @@ class PreProcesser:
             # Identify categorical columns (non-numeric)
             categorical_columns = self.X.select_dtypes(include=['object', 'category']).columns
             
-            # Apply OneHotEncoder to categorical columns
-            if not categorical_columns.empty:
-                encoder = OneHotEncoder(sparse_output=False)  # Use dense output
-                encoded = encoder.fit_transform(self.X[categorical_columns])
-                encoded_df = pd.DataFrame(encoded, index=self.X.index)
-                
-                # Drop original categorical columns and concatenate encoded columns
-                self.X = pd.concat([self.X.drop(columns=categorical_columns), encoded_df], axis=1)
+            # Apply label encoding to categorical columns
+            for col in categorical_columns:
+                self.X[col] = self.X[col].astype('category').cat.codes
             
-            # Ensure all data in self.X is numeric
-            self.X = self.X.apply(pd.to_numeric, errors='coerce')
-            
-            # Check for NaN values and fill them with 0
-            self.X = self.X.fillna(0)
-            
-            # Perform normalization
+            self.data = pd.concat([self.X, pd.Series(self.y, name='Diagnosis')], axis=1)
+                        # Perform normalization
             self.X = (self.X - self.X.min()) / (self.X.max() - self.X.min())
             self.X = self.X.to_numpy()
-
+            
     def preprocess(self):
         self.setData();
         self.normalize()

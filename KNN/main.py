@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from sklearn import datasets
 from sklearn.datasets import fetch_openml, load_iris, load_wine
 
-file_path = 'datasets/parkinsons.csv'
+file_path = 'datasets/credit_approval.csv'
 df = pd.read_csv(file_path)
 
 #  Load the digits dataset
@@ -23,14 +23,13 @@ df = pd.read_csv(file_path)
 # df = data.copy()
 
 # Load the Kuzushiji-MNIST (Japanese letters) dataset
-# kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1, as_frame=False)
-# X = kuzushiji.data/ 255.0
-# y = kuzushiji.target.astype(int)  # Already numeric labels 0-9
-# X, y = X[:200], y[:200]
-# data = pd.DataFrame(X, columns=[f"feature{i}" for i in range(X.shape[1])])
-# data["Diagnosis"] = y
-# df = data.copy()
-
+kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1, as_frame=False)
+X = kuzushiji.data/ 255.0
+y = kuzushiji.target.astype(int)  # Already numeric labels 0-9
+X, y = X[:10000], y[:10000]
+data = pd.DataFrame(X, columns=[f"feature{i}" for i in range(X.shape[1])])
+data["Diagnosis"] = y
+df = data.copy()
 
 # Pre process
 num_columns = df.shape[1]
@@ -38,12 +37,14 @@ column_names = [f"feature{i}" for i in range(num_columns - 1)] + ["Diagnosis"]
 df.columns = column_names
 
 # Create Processor Object
-wbdcProcessor = PreProcesser(df)
-wbdcAnalyser = Analyser(df)
+# wbdcProcessor = PreProcesser(df)
+# wbdcAnalyser = Analyser(df)
+# wbdcProcessor.preprocess()
+# df = wbdcProcessor.data 
 # knnSamplerTrainN = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20)
-# knnSamplerTestN = KKNSampler(df,k_range=range(5, 50, 2), test_data=True, sampling_runs=20)
-knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20,normalized=False)
-# knnSamplerTest = KKNSampler(df,k_range=range(1, 30, 2), test_data=True, sampling_runs=20,normalized=False)
+# knnSamplerTestN = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20)
+# knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20,normalized=False)
+knnSamplerTest = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20,normalized=False)
 
 '''
     Data Analysing
@@ -64,10 +65,10 @@ knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampli
 # knnSamplerTestN.plotModel()
 
 # Run sampler for Non-Normalized data
-knnSamplerTrain.run()
-knnSamplerTrain.plotModel(False)
-# knnSamplerTest.run()
-# knnSamplerTest.plotModel(False)
+# knnSamplerTrain.run()
+# knnSamplerTrain.plotModel(False)
+knnSamplerTest.run()
+knnSamplerTest.plotModel(False)
 
 
 # plotComparision(knnSamplerTestN,knnSamplerTest,
