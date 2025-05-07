@@ -26,7 +26,7 @@ df = pd.read_csv(file_path)
 kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1, as_frame=False)
 X = kuzushiji.data/ 255.0
 y = kuzushiji.target.astype(int)  # Already numeric labels 0-9
-X, y = X[:10000], y[:10000]
+X, y = X[:1000], y[:1000]
 data = pd.DataFrame(X, columns=[f"feature{i}" for i in range(X.shape[1])])
 data["Diagnosis"] = y
 df = data.copy()
@@ -43,7 +43,7 @@ df.columns = column_names
 # df = wbdcProcessor.data 
 # knnSamplerTrainN = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20)
 # knnSamplerTestN = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20)
-# knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20,normalized=False)
+knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20,normalized=False)
 knnSamplerTest = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20,normalized=False)
 
 '''
@@ -65,8 +65,8 @@ knnSamplerTest = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling
 # knnSamplerTestN.plotModel()
 
 # Run sampler for Non-Normalized data
-# knnSamplerTrain.run()
-# knnSamplerTrain.plotModel(False)
+knnSamplerTrain.run()
+knnSamplerTrain.plotModel(False)
 knnSamplerTest.run()
 knnSamplerTest.plotModel(False)
 

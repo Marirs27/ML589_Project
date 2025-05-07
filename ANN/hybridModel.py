@@ -1,15 +1,15 @@
+import os
+import sys
 import numpy as np
-from layer import Layer
-from forwardPropagation import ForwardPropagation
-from backPropagation import BackPropagation
 from dataProcess import DataPreprocessor
 from trainModel import TrainModel
 import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, f1_score
 import numpy as np
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'KNN')))
+from KNN_Instance import KNNModel
 
 class ModelSampler:
     EPSILON = 1e-6
@@ -74,7 +74,7 @@ class ModelSampler:
 
 if __name__ == "__main__":
     layerSkeletons = [
-      [12, 8, 1]
+      [18, 10, 1]
     ]
     # modelSampler = ModelSampler(filePath='ANN/datasets/loan.csv')
     # for reg in modelSampler.REGULARIZATION_VALUES:
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     #             )
     #             print("Model sampling completed successfully")
 
-    modelSampler = ModelSampler(filePath='datasets/rice.csv')
+    modelSampler = ModelSampler(filePath='datasets/parkinsons.csv', labelColumn='Diagnosis')
     modelSampler.EPOCHS = 100
     featureModel = modelSampler.sampleModels(
         layerSkeleton=layerSkeletons,
@@ -120,10 +120,11 @@ if __name__ == "__main__":
         features_test.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
     features_test = np.array(features_test)
 
-    # Train and evaluate KNN on ANN features
-    knn = KNeighborsClassifier(n_neighbors=10)
-    knn.fit(features_train, y_train)
-    y_pred = knn.predict(features_test)
+    # Use your custom KNN model
+    knn = KNNModel(k=10)
+    knn.trainModel(features_train, y_train)
+    y_pred = knn.testModel(features_test)
+
     acc = accuracy_score(y_test, y_pred)
     f1 = f1_score(y_test, y_pred, average='weighted')
     print(f"KNN on ANN features - Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")

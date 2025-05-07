@@ -213,7 +213,7 @@ def run_on_credit(encode=True):
     acc = accuracy_score(y_test, preds)
     f1 = f1_score(y_test, preds, average='binary')
     print(f"Credit Approval Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.05, batch_size=32, acc=acc, f1=f1)
+    model.plot_loss(lr=0.4, batch_size=22, acc=acc, f1=f1)
     model.plot_roc_curve(y_test, model.predict_proba(X_test))
 
 def run_digits_mnist():
@@ -225,8 +225,9 @@ def run_digits_mnist():
     model.fit(X_train, y_train, X_test, y_test)
     preds = model.predict(X_test)
     acc = np.mean(preds == y_test)
-    print(f"Digits Accuracy: {acc:.4f}")
-    model.plot_loss(lr=0.1, batch_size=32)
+    f1 = f1_score(y_test, preds, average='weighted')
+    print(f"Digits Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
+    model.plot_loss(lr=0.1, batch_size=32,acc=acc, f1=f1)
 
 def run_kuzushiji_mnist():
     kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1)
@@ -236,7 +237,7 @@ def run_kuzushiji_mnist():
     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
     model = LogisticRegressionScratch(
         learning_rate=0.01, 
-        num_iter=300, 
+        num_iter=500, 
         batch_size=28, 
         reg_lambda=0.01, 
         verbose=True
@@ -244,12 +245,13 @@ def run_kuzushiji_mnist():
     model.fit(X_train, y_train, X_test, y_test)
     preds = model.predict(X_test)
     acc = np.mean(preds == y_test)
-    print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}")
-    model.plot_loss(lr=0.01, batch_size=28)
+    f1 = f1_score(y_test, preds, average='weighted')
+    print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
+    model.plot_loss(lr=0.01, batch_size=28, acc=acc, f1=f1)
 
 
 if __name__ == "__main__":
-    # run_kuzushiji_mnist()
+    run_kuzushiji_mnist()
     # run_digits_mnist()
     # run_on_parkinsons()
-    run_on_credit()
+    # run_on_credit()
