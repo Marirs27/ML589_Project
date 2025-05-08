@@ -108,8 +108,6 @@ if __name__ == "__main__":
     features_train = []
     for i in range(X_train.shape[0]):
         featureModel.forwardPropagation.forward(X_train[i].reshape(-1, 1))
-        # a[-2] is the activation of the last hidden layer (with bias as first row)
-        # Remove the bias term (first element)
         features_train.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
     features_train = np.array(features_train)
 

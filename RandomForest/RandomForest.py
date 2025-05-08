@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn import datasets
 
-LABEL_NAME = 'label'
+LABEL_NAME = 'Diagnosis' 
 
 def get_bootstrap_sample(data):
     return data.sample(n=len(data), replace=True)
@@ -247,12 +247,15 @@ def plot_all_metrics_color(results, dataset_name):
 
 
 def hyperparameter_tuning(data, attributes):
+    import pandas as pd
     min_samples = [2, 5, 10]
     max_depths = [5, 10, 15]
     min_info_gains = [0.01, 0.05, 0.1]
-    n_tree = [5,10,20,30,40]
+    n_tree = [20]
     best_params = None
     best_f1 = 0
+    results = []  # To store results for DataFrame
+
     for samples in min_samples:
         for depth in max_depths:
             for gain in min_info_gains:
@@ -268,10 +271,22 @@ def hyperparameter_tuning(data, attributes):
 
                     avg_f1 = np.mean(f1s)
                     avg_acc = np.mean(accs)
-                    print(f"Samples: {samples}, Depth: {depth}, Gain: {gain}, F1: {avg_f1:.4f}")
+                    print(f"Samples: {samples}, Depth: {depth}, Gain: {gain}, F1: {avg_f1:.4f}, Acc: {avg_acc:.4f}")
+                    results.append({
+                        "min_samples": samples,
+                        "max_depth": depth,
+                        "min_info_gain": gain,
+                        "n_tree": ntree,
+                        "avg_f1": avg_f1,
+                        "avg_acc": avg_acc
+                    })
                     if avg_f1 > best_f1:
                         best_f1 = avg_f1
                         best_params = (samples, depth, gain)
+    # Save results to DataFrame and CSV
+    results_df = pd.DataFrame(results)
+    results_df.to_csv("rf_hyperparam_results.csv", index=False)
+    print("Saved hyperparameter tuning results to rf_hyperparam_results.csv")
     return best_params
 
 def run_random_forest(filename, nTrees=[5, 10, 20, 30, 40, 50], k=5, min_samples_split= 2, max_depth= 10, min_info_gain= 0.01):
@@ -327,19 +342,37 @@ def run_random_forest(filename, nTrees=[5, 10, 20, 30, 40, 50], k=5, min_samples
     plot_all_metrics_color(results, dataset_name=filename.split("/")[-1].replace(".csv", ""))
 
 if __name__ == "__main__":
-    # df = pd.read_csv("Random Forest2/raisin.csv")
-    # hyperparameter_tuning(df,attributes=df.columns[:-1])
     # run_random_forest("datasets/credit_approval.csv")  
     # run_random_forest("datasets/parkinsons.csv")  
-    digits = datasets.load_digits(return_X_y=True)
-    digits_dataset_X = digits[0]
-    digits_dataset_y = digits[1]
-    data = pd.DataFrame(digits_dataset_X, columns=[f'pixel_{i}' for i in range(digits_dataset_X.shape[1])])
-    data['label'] = digits_dataset_y
-    # Save to CSV
-    data.to_csv("digits.csv", index=False)
+    # digits = datasets.load_digits(return_X_y=True)
+    # digits_dataset_X = digits[0]
+    # digits_dataset_y = digits[1]
+    # data = pd.DataFrame(digits_dataset_X, columns=[f'pixel_{i}' for i in range(digits_dataset_X.shape[1])])
+    # data['label'] = digits_dataset_y
+    # # Save to CSV
+    # data.to_csv("digits.csv", index=False)
 
     # Now run your random forest on this file
-    run_random_forest("digits.csv")
+    # run_random_forest("digits.csv")
     # run_random_forest("datasets/rice.csv")
+
+
+    # Hyperparameter tuning
+    data = pd.read_csv("datasets/parkinsons.csv")
+    # --- Encode categorical features (excluding label) ---
+    categorical_features = data.select_dtypes(include=['object', 'category']).columns.drop(LABEL_NAME, errors='ignore')
+    if len(categorical_features) > 0:
+        data = pd.get_dummies(data, columns=categorical_features, drop_first=True)
+
+    # --- Encode label column if it's categorical ---
+    if data[LABEL_NAME].dtype == 'object' or data[LABEL_NAME].dtype.name == 'category':
+        le = LabelEncoder()
+        data[LABEL_NAME] = le.fit_transform(data[LABEL_NAME])
+
+    # Perform hyperparameter tuning
+    attributes = [col for col in data.columns if col != LABEL_NAME]
+    best_params = hyperparameter_tuning(data, attributes)
+    print(f"Best Parameters: {best_params}")
+    
+
 
