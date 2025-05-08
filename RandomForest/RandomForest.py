@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn import datasets
 
-LABEL_NAME = 'Diagnosis' 
+LABEL_NAME = 'label' 
 
 def get_bootstrap_sample(data):
     return data.sample(n=len(data), replace=True)
@@ -248,8 +248,8 @@ def plot_all_metrics_color(results, dataset_name):
 
 def hyperparameter_tuning(data, attributes):
     import pandas as pd
-    min_samples = [2, 5, 10]
-    max_depths = [5, 10, 15]
+    min_samples = [2, 5]
+    max_depths = [10, 15]
     min_info_gains = [0.01, 0.05, 0.1]
     n_tree = [20]
     best_params = None
@@ -358,7 +358,7 @@ if __name__ == "__main__":
 
 
     # Hyperparameter tuning
-    data = pd.read_csv("datasets/parkinsons.csv")
+    data = pd.read_csv("datasets/rice.csv")
     # --- Encode categorical features (excluding label) ---
     categorical_features = data.select_dtypes(include=['object', 'category']).columns.drop(LABEL_NAME, errors='ignore')
     if len(categorical_features) > 0:

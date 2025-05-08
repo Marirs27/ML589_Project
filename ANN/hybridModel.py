@@ -16,7 +16,7 @@ class ModelSampler:
     REGULARIZATION_VALUES = [0.01,0.025]
     STEP_SIZE_VALUES = [0.01, 0.05]
     BATCH_SIZE_VALUES = [10,32, 20]
-    K_FOLD = 10
+    K_FOLD = 2
     EPOCHS = 100
     
     def __init__(self, filePath, splice = None, labelColumn = 'label'):
@@ -64,66 +64,145 @@ class ModelSampler:
 
         print("Model sampling completed successfully")
         return model
-    
 
+def hybrid_hyperparam_tuning(
+    filePath,
+    labelColumn,
+    layerSkeletons,
+    regularizations=[0.01, 0.025],
+    stepSizes=[0.01, 0.05],
+    batchSizes=[10, 32],
+    knn_ks=[5, 10, 15]
+):
+    import pandas as pd
+    from sklearn.metrics import accuracy_score, f1_score
 
+    results = []
+    for reg in regularizations:
+        for step in stepSizes:
+            for batch in batchSizes:
+                # Train ANN
+                modelSampler = ModelSampler(filePath=filePath, labelColumn=labelColumn)
+                modelSampler.EPOCHS = 100
+                featureModel = modelSampler.sampleModels(
+                    layerSkeleton=layerSkeletons,
+                    regularization=reg,
+                    stepSize=step,
+                    batchSize=batch,
+                    stoppingCriterionCategory='epochs'
+                )
+                X_train, y_train, X_test, y_test = modelSampler.preprocessor.getTrainTestSplit(0)
+                # Extract ANN features
+                features_train = []
+                for i in range(X_train.shape[0]):
+                    featureModel.forwardPropagation.forward(X_train[i].reshape(-1, 1))
+                    features_train.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
+                features_train = np.array(features_train)
+                features_test = []
+                for i in range(X_test.shape[0]):
+                    featureModel.forwardPropagation.forward(X_test[i].reshape(-1, 1))
+                    features_test.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
+                features_test = np.array(features_test)
+                # KNN tuning
+                for k in knn_ks:
+                    knn = KNNModel(k=k)
+                    knn.trainModel(features_train, y_train)
+                    y_pred = knn.testModel(features_test)
+                    acc = accuracy_score(y_test, y_pred)
+                    f1 = f1_score(y_test, y_pred, average='weighted')
+                    print(f"reg={reg}, step={step}, batch={batch}, k={k} | Acc={acc:.4f}, F1={f1:.4f}")
+                    results.append({
+                        "regularization": reg,
+                        "stepSize": step,
+                        "batchSize": batch,
+                        "knn_k": k,
+                        "accuracy": acc,
+                        "f1": f1
+                    })
+    # Save results
+    results_df = pd.DataFrame(results)
+    results_df.to_csv("hybrid_hyperparam_results.csv", index=False)
+    print("Saved results to hybrid_hyperparam_results.csv")
+    # Print best
+    best = results_df.loc[results_df['f1'].idxmax()]
+    print("Best params:", best)
+    return results_df
 
-
-
-
-
+# Example usage in __main__:
 if __name__ == "__main__":
     layerSkeletons = [
       [18, 10, 1]
     ]
-    # modelSampler = ModelSampler(filePath='ANN/datasets/loan.csv')
-    # for reg in modelSampler.REGULARIZATION_VALUES:
-    #     for step in modelSampler.STEP_SIZE_VALUES:
-    #         for batch in modelSampler.BATCH_SIZE_VALUES:
-    #             print(f"Sampling models with regularization={reg}, stepSize={step}, batchSize={batch}")
-    #             # layerSkeletons.extend(LOAN_LAYERS_SKELETON) 
-    #             modelSampler.sampleModels(
-    #                 layerSkeleton=LOAN_LAYERS_SKELETON,
-    #                 regularization=reg,
-    #                 stepSize=step,
-    #                 batchSize=batch,
-    #                 stoppingCriterionCategory='epochs'
-    #             )
-    #             print("Model sampling completed successfully")
-
-    modelSampler = ModelSampler(filePath='datasets/parkinsons.csv', labelColumn='Diagnosis')
-    modelSampler.EPOCHS = 100
-    featureModel = modelSampler.sampleModels(
-        layerSkeleton=layerSkeletons,
-        regularization=0.027,
-        stepSize=0.05,
-        batchSize=25,
-        stoppingCriterionCategory='epochs'
+    hybrid_hyperparam_tuning(
+        filePath='datasets/rice.csv',
+        labelColumn='label',
+        layerSkeletons=layerSkeletons,
+        regularizations=[0.01, 0.025],
+        stepSizes=[0.01, 0.05],
+        batchSizes=[10, 32],
+        knn_ks=[5, 10, 15]
     )
 
-    # Get train/test splits from your preprocessor
-    X_train, y_train, X_test, y_test = modelSampler.preprocessor.getTrainTestSplit(0)
 
-    # Extract features for each instance in train set using .forward()
-    features_train = []
-    for i in range(X_train.shape[0]):
-        featureModel.forwardPropagation.forward(X_train[i].reshape(-1, 1))
-        features_train.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
-    features_train = np.array(features_train)
 
-    # Extract features for each instance in test set
-    features_test = []
-    for i in range(X_test.shape[0]):
-        featureModel.forwardPropagation.forward(X_test[i].reshape(-1, 1))
-        features_test.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
-    features_test = np.array(features_test)
 
-    # Use your custom KNN model
-    knn = KNNModel(k=10)
-    knn.trainModel(features_train, y_train)
-    y_pred = knn.testModel(features_test)
 
-    acc = accuracy_score(y_test, y_pred)
-    f1 = f1_score(y_test, y_pred, average='weighted')
-    print(f"KNN on ANN features - Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
+
+
+# if __name__ == "__main__":
+#     layerSkeletons = [
+#       [18, 10, 1]
+#     ]
+#     # modelSampler = ModelSampler(filePath='ANN/datasets/loan.csv')
+#     # for reg in modelSampler.REGULARIZATION_VALUES:
+#     #     for step in modelSampler.STEP_SIZE_VALUES:
+#     #         for batch in modelSampler.BATCH_SIZE_VALUES:
+#     #             print(f"Sampling models with regularization={reg}, stepSize={step}, batchSize={batch}")
+#     #             # layerSkeletons.extend(LOAN_LAYERS_SKELETON) 
+#     #             modelSampler.sampleModels(
+#     #                 layerSkeleton=LOAN_LAYERS_SKELETON,
+#     #                 regularization=reg,
+#     #                 stepSize=step,
+#     #                 batchSize=batch,
+#     #                 stoppingCriterionCategory='epochs'
+#     #             )
+#     #             print("Model sampling completed successfully")
+
+#     modelSampler = ModelSampler(filePath='datasets/credit_approval.csv', labelColumn='label')
+#     modelSampler.EPOCHS = 100
+#     featureModel = modelSampler.sampleModels(
+#         layerSkeleton=layerSkeletons,
+#         regularization=0.027,
+#         stepSize=0.05,
+#         batchSize=25,
+#         stoppingCriterionCategory='epochs'
+#     )
+
+#     # Get train/test splits from your preprocessor
+#     X_train, y_train, X_test, y_test = modelSampler.preprocessor.getTrainTestSplit(0)
+
+#     # Extract features for each instance in train set using .forward()
+#     features_train = []
+#     for i in range(X_train.shape[0]):
+#         featureModel.forwardPropagation.forward(X_train[i].reshape(-1, 1))
+#         features_train.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
+#     features_train = np.array(features_train)
+
+#     # Extract features for each instance in test set
+#     features_test = []
+#     for i in range(X_test.shape[0]):
+#         featureModel.forwardPropagation.forward(X_test[i].reshape(-1, 1))
+#         features_test.append(featureModel.forwardPropagation.layers[-2].a[1:].flatten())
+#     features_test = np.array(features_test)
+
+#     # Use your custom KNN model
+#     knn = KNNModel(k=13)
+#     knn.trainModel(features_train, y_train)
+#     y_pred = knn.testModel(features_test)
+
+#     acc = accuracy_score(y_test, y_pred)
+#     f1 = f1_score(y_test, y_pred, average='weighted')
+#     print(f"KNN on ANN features - Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
+
+
 

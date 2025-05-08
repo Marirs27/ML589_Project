@@ -140,27 +140,72 @@ class LogisticRegressionScratch:
             plt.plot(self.test_loss_history, label='Test Loss', color=palette[1])  # Green
         plt.xlabel("Epoch")
         plt.ylabel("Loss")
-        plt.title("Loss vs Epochs with Learning Rate: {} and Batch Size: {}".format(lr, batch_size)+
-                  f"\nAccuracy: {acc:.4f}, F1 Score: {f1:.4f}")    
+        plt.title("Loss vs Epochs with Learning Rate: {} and Batch Size: {}".format(lr, batch_size))    
+        plt.legend()
         plt.legend()
         plt.grid()
         plt.show()
 
-    def plot_roc_curve(self, y_true, y_probs):
-        fpr, tpr, thresholds = roc_curve(y_true, y_probs)
-        roc_auc = auc(fpr, tpr)
+    def plot_roc_curve(y_true, y_probs):
+        # Sort by predicted probabilities
+        desc_score_indices = np.argsort(-y_probs)
+        y_true = np.array(y_true)[desc_score_indices]
+        y_probs = np.array(y_probs)[desc_score_indices]
+        thresholds = np.unique(y_probs)[::-1]
+        tpr = []
+        fpr = []
+        P = np.sum(y_true == 1)
+        N = np.sum(y_true == 0)
+        for thresh in thresholds:
+            y_pred = (y_probs >= thresh).astype(int)
+            TP = np.sum((y_pred == 1) & (y_true == 1))
+            FP = np.sum((y_pred == 1) & (y_true == 0))
+            tpr.append(TP / P if P else 0)
+            fpr.append(FP / N if N else 0)
         plt.figure(figsize=(8, 5))
-        plt.plot(fpr, tpr, label=f"AUC = {roc_auc:.4f}", color=palette[0])  # Orange
-        plt.plot([0, 1], [0, 1], '--', color=palette[1])  # Green dashed
+        plt.plot(fpr, tpr, label="ROC Curve", color="purple")
+        plt.plot([0, 1], [0, 1], '--', color="gray")
         plt.xlabel("False Positive Rate")
         plt.ylabel("True Positive Rate")
         plt.title("ROC Curve")
         plt.legend()
         plt.grid()
-        # Annotate AUC in orange
-        # plt.annotate(f"AUC = {roc_auc:.4f}", xy=(0.6, 0.05), color=palette[0], fontsize=12, fontweight='bold')
         plt.show()
 
+
+def hyperparam_tuning(X, y, batch_sizes, learning_rates, reg_lambdas, num_iter=300, verbose=False):
+    from sklearn.model_selection import train_test_split
+    from sklearn.metrics import f1_score, accuracy_score
+    results = []
+    for batch_size in batch_sizes:
+        for lr in learning_rates:
+            for reg in reg_lambdas:
+                X_train, X_val, y_train, y_val = train_test_split(X, y, stratify=y, random_state=42)
+                model = LogisticRegressionScratch(
+                    learning_rate=lr,
+                    num_iter=num_iter,
+                    reg_lambda=reg,
+                    batch_size=batch_size,
+                    verbose=verbose
+                )
+                model.fit(X_train, y_train, X_val, y_val)
+                preds = model.predict(X_val)
+                acc = accuracy_score(y_val, preds)
+                f1 = f1_score(y_val, preds, average='binary' if len(np.unique(y))==2 else 'weighted')
+                results.append({
+                    "batch_size": batch_size,
+                    "learning_rate": lr,
+                    "reg_lambda": reg,
+                    "accuracy": acc,
+                    "f1": f1
+                })
+                print(f"Batch: {batch_size}, LR: {lr}, Reg: {reg} => Acc: {acc:.4f}, F1: {f1:.4f}")
+    # Convert to DataFrame for easy viewing
+    import pandas as pd
+    results_df = pd.DataFrame(results)
+    results_df.to_csv("logreg_hyperparam_results.csv", index=False)
+    print("Saved hyperparameter tuning results to logreg_hyperparam_results.csv")
+    return results_df
 
 def run_on_rice(encode=True):
     import pandas as pd
@@ -213,8 +258,13 @@ def run_on_credit(encode=True):
     acc = accuracy_score(y_test, preds)
     f1 = f1_score(y_test, preds, average='binary')
     print(f"Credit Approval Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.4, batch_size=22, acc=acc, f1=f1)
-    model.plot_roc_curve(y_test, model.predict_proba(X_test))
+    model.plot_loss(lr=0.01, batch_size=64, acc=acc, f1=f1)
+    LogisticRegressionScratch.plot_roc_curve(y_test, model.predict_proba(X_test))
+    # After loading and preprocessing your data (X, y):
+    # batch_sizes = [16, 32, 64]
+    # learning_rates = [0.01, 0.05, 0.1]
+    # reg_lambdas = [0.001, 0.01, 0.1]
+    # hyperparam_tuning(X, y, batch_sizes, learning_rates, reg_lambdas)
 
 def run_digits_mnist():
     digits = datasets.load_digits(return_X_y=True)
@@ -227,7 +277,7 @@ def run_digits_mnist():
     acc = np.mean(preds == y_test)
     f1 = f1_score(y_test, preds, average='weighted')
     print(f"Digits Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.1, batch_size=32,acc=acc, f1=f1)
+    model.plot_loss(lr=0.01, batch_size=64,acc=acc, f1=f1)
 
 def run_kuzushiji_mnist():
     kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1)
@@ -247,11 +297,13 @@ def run_kuzushiji_mnist():
     acc = np.mean(preds == y_test)
     f1 = f1_score(y_test, preds, average='weighted')
     print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.01, batch_size=28, acc=acc, f1=f1)
+    model.plot_loss(lr=0.01, batch_size=64, acc=acc, f1=f1)
+
+
 
 
 if __name__ == "__main__":
-    run_kuzushiji_mnist()
+    # run_kuzushiji_mnist()
     # run_digits_mnist()
     # run_on_parkinsons()
-    # run_on_credit()
+    run_on_credit()

@@ -41,9 +41,9 @@ df.columns = column_names
 # wbdcProcessor.preprocess()
 # df = wbdcProcessor.data 
 # knnSamplerTrainN = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20)
-# knnSamplerTestN = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20)
-knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20,normalized=False)
-knnSamplerTest = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20,normalized=False)
+knnSamplerTestN = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20)
+# knnSamplerTrain = KKNSampler(df,k_range=range(1, 52, 2), test_data=False, sampling_runs=20,normalized=False)
+# knnSamplerTest = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling_runs=20,normalized=False)
 
 '''
     Data Analysing
@@ -60,14 +60,14 @@ knnSamplerTest = KKNSampler(df,k_range=range(5, 30, 2), test_data=True, sampling
 # Run sampler for Normalized data
 # knnSamplerTrainN.run()
 # knnSamplerTrainN.plotModel()
-# knnSamplerTestN.run()
-# knnSamplerTestN.plotModel()
+knnSamplerTestN.run()
+knnSamplerTestN.plotModel()
 
 # Run sampler for Non-Normalized data
-knnSamplerTrain.run()
-knnSamplerTrain.plotModel(False)
-knnSamplerTest.run()
-knnSamplerTest.plotModel(False)
+# knnSamplerTrain.run()
+# knnSamplerTrain.plotModel(False)
+# knnSamplerTest.run()
+# knnSamplerTest.plotModel(False)
 
 
 # plotComparision(knnSamplerTestN,knnSamplerTest,
