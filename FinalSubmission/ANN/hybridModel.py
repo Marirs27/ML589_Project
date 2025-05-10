@@ -10,6 +10,7 @@ from sklearn.metrics import accuracy_score, f1_score
 import numpy as np
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'KNN')))
 from KNN_Instance import KNNModel
+import pandas as pd
 
 class ModelSampler:
     EPSILON = 1e-6
@@ -76,6 +77,26 @@ class ModelSampler:
 
         print("Model sampling completed successfully")
         return model
+    
+
+def calculate_metrics(y_true, y_pred):
+    tp, fp, fn, tn = 0, 0, 0, 0
+    for true, pred in zip(y_true, y_pred):
+        if true == pred:
+            if true == 1:
+                tp += 1
+            else:
+                tn += 1
+        else:
+            if true == 1:
+                fn += 1
+            else:
+                fp += 1
+    accuracy = (tp + tn) / len(y_true)
+    precision = tp / (tp + fp) if tp + fp > 0 else 0
+    recall = tp / (tp + fn) if tp + fn > 0 else 0
+    f1 = 2 * (precision * recall) / (precision + recall) if precision + recall > 0 else 0
+    return accuracy, precision, recall, f1
 
 def hybrid_hyperparam_tuning(
     filePath,
@@ -86,8 +107,6 @@ def hybrid_hyperparam_tuning(
     batchSizes=[10, 32],
     knn_ks=[5, 10, 15]
 ):
-    import pandas as pd
-    from sklearn.metrics import accuracy_score, f1_score
 
     results = []
     for reg in regularizations:
@@ -145,10 +164,10 @@ def hybrid_hyperparam_tuning(
 
 if __name__ == "__main__":
     layerSkeletons = [
-      [3,4,18,1]
+      [3,4,18,1] # Your best ANN architecture
     ]
 
-
+    # Change dataset accordingly to run the hybrid model
     modelSampler = ModelSampler(filePath='datasets/rice.csv', labelColumn='label')
     modelSampler.EPOCHS = 200
     featureModel = modelSampler.sampleModels(
@@ -178,16 +197,15 @@ if __name__ == "__main__":
 
     a = []
     f = []
-    # Use your custom KNN model
+    # Use your custom KNN model with different k values
     for i in range(7, 40, 2):
         knn = KNNModel(k=i)
         knn.trainModel(features_train, y_train)
         y_pred = knn.testModel(features_test)
 
-        acc = accuracy_score(y_test, y_pred)
-        f1 = f1_score(y_test, y_pred, average='binary')
+        acc, _, _, f1_score_val = calculate_metrics(y_test, y_pred)
         a.append(acc)
-        f.append(f1)
+        f.append(f1_score_val)
     
     plt.figure(figsize=(12, 6))
     plt.errorbar(range(7,40, 2), a, yerr=[0.01]*len(a), fmt='o', capsize=5,

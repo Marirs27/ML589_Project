@@ -42,7 +42,6 @@ FinalSubmission/
 ### Main Files:
 - `trainModel.py`: Contains the main ANN training logic.
 - `modelSampler.py`: For sampling and evaluating different ANN architectures.
-- `hybridModel.py`: Implements the hybrid ANN+KNN model and hyperparameter tuning.
 
 ### How to Run ANN:
 
@@ -125,27 +124,13 @@ You can edit this block to change the dataset, architecture, or parameters.
 
 ---
 
-## 6. Hyperparameter Tuning
+## 6. Hybrid Model Tuning
 
 **Function:** `hybrid_hyperparam_tuning` in `ANN/hybridModel.py`
 
 ### How to Run Hyperparameter Tuning
 
 To run hyperparameter tuning for the hybrid model, **uncomment and edit** the following block at the bottom of `hybridModel.py`:
-
-```python
-# hybrid_hyperparam_tuning(
-#     filePath='datasets/rice.csv',
-#     labelColumn='label',
-#     layerSkeletons=[[3,4,18,1]],
-#     regularizations=[0.01, 0.025],
-#     stepSizes=[0.01, 0.05],
-#     batchSizes=[10, 32],
-#     knn_ks=[5, 10, 15, 20]
-# )
-```
-
-**Example:**
 
 ```python
 hybrid_hyperparam_tuning(
@@ -176,13 +161,6 @@ This will perform grid search over the specified hyperparameters and save result
   ```bash
   pip install numpy pandas scikit-learn matplotlib seaborn
   ```
-- **Custom Implementations:** Some scripts use custom neural network and KNN code. Make sure all dependencies are in the same folder or update import paths as needed.
 
----
-
-## 8. Results
-
-- Plots and CSVs will be saved in the working directory.
-- LaTeX tables for results can be generated using the provided code in each script.
 
 ---
