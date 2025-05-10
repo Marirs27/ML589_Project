@@ -1,0 +1,1105 @@
+Data loaded successfully from datasets/parkinsons.csv
+Data shape: (195, 23)
+No categorical variables to encode.
+Data normalized successfully
+Data shape: (195, 23)
+Label distribution:
+Diagnosis
+1.0    147
+0.0     48
+Name: count, dtype: int64
+Data has been split into 2 folds
+	Fold 1: 97 samples
+	Fold 2: 98 samples
+Sampling models with regularization=0.01, stepSize=0.01, batchSize=10
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.13499999999999 f1:  90.91
+TPR:  98.65 FPR:  56.25
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.115 f1:  90.285
+TPR:  97.975 FPR:  58.335
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.645 f1:  91.145
+TPR:  97.965 FPR:  52.085
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 82.03999999999999 f1:  89.245
+TPR:  98.65 FPR:  68.75
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.13499999999999 f1:  90.86
+TPR:  97.965 FPR:  54.165
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.14 f1:  90.81
+TPR:  97.28999999999999 FPR:  52.08
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.01, batchSize=32
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 82.555 f1:  89.36500000000001
+TPR:  97.27000000000001 FPR:  62.5
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 77.42500000000001 f1:  86.765
+TPR:  97.975 FPR:  85.41499999999999
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 78.965 f1:  87.4
+TPR:  96.61 FPR:  75.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 81.02 f1:  88.33
+TPR:  95.25 FPR:  62.5
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 78.95500000000001 f1:  87.78999999999999
+TPR:  100.0 FPR:  85.41499999999999
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.01, batchSize=20
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.625 f1:  90.63
+TPR:  98.65 FPR:  58.335
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 83.595 f1:  89.82
+TPR:  95.91 FPR:  54.165
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.89500000000001 f1:  85.88499999999999
+TPR:  97.295 FPR:  89.58500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.115 f1:  90.185
+TPR:  96.605 FPR:  54.165
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.13499999999999 f1:  90.81
+TPR:  97.27000000000001 FPR:  52.085
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.05, batchSize=10
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 88.725 f1:  93.005
+TPR:  99.325 FPR:  43.75
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.695 f1:  92.46000000000001
+TPR:  100.0 FPR:  50.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.705 f1:  92.38
+TPR:  98.65 FPR:  45.835
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.62 f1:  90.63
+TPR:  98.64 FPR:  58.335
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.68 f1:  91.795
+TPR:  98.65 FPR:  50.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.69999999999999 f1:  92.42
+TPR:  99.325 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 77.42500000000001 f1:  86.69
+TPR:  97.295 FPR:  83.33500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.05, batchSize=32
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.14 f1:  90.69
+TPR:  95.92500000000001 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.14 f1:  90.92
+TPR:  98.65 FPR:  56.25
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.625 f1:  90.33500000000001
+TPR:  95.24000000000001 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 78.445 f1:  87.38499999999999
+TPR:  98.65 FPR:  83.33500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.63 f1:  90.575
+TPR:  97.975 FPR:  56.25
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.11 f1:  90.225
+TPR:  97.28999999999999 FPR:  56.25
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.05, batchSize=20
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.68 f1:  91.73
+TPR:  97.975 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.16499999999999 f1:  91.385
+TPR:  97.28999999999999 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.155 f1:  91.325
+TPR:  96.605 FPR:  45.83
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.185 f1:  92.12
+TPR:  99.325 FPR:  50.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 83.595 f1:  89.805
+TPR:  95.92500000000001 FPR:  54.17
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.14 f1:  90.75999999999999
+TPR:  96.605 FPR:  50.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.01, batchSize=10
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 83.09 f1:  89.405
+TPR:  94.565 FPR:  52.08
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 77.935 f1:  87.03999999999999
+TPR:  97.975 FPR:  83.33500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.13499999999999 f1:  90.68
+TPR:  95.92500000000001 FPR:  47.915
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 79.465 f1:  88.06
+TPR:  100.0 FPR:  83.33500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.62 f1:  90.455
+TPR:  96.595 FPR:  52.08
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 77.94 f1:  86.945
+TPR:  97.295 FPR:  81.25
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.01, batchSize=32
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.105 f1:  90.34
+TPR:  98.65 FPR:  60.415
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 77.42500000000001 f1:  86.845
+TPR:  98.65 FPR:  87.5
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 79.47999999999999 f1:  87.66
+TPR:  96.61 FPR:  72.91499999999999
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 78.445 f1:  87.515
+TPR:  100.0 FPR:  87.5
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.01, batchSize=20
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 82.045 f1:  89.16499999999999
+TPR:  97.975 FPR:  66.66499999999999
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 76.405 f1:  86.47
+TPR:  100.0 FPR:  95.83500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 81.55000000000001 f1:  88.67
+TPR:  95.935 FPR:  62.5
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.18 f1:  92.165
+TPR:  100.0 FPR:  52.085
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 78.95500000000001 f1:  87.78999999999999
+TPR:  100.0 FPR:  85.41499999999999
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.05, batchSize=10
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.675 f1:  91.895
+TPR:  100.0 FPR:  54.165
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.19 f1:  92.135
+TPR:  99.325 FPR:  50.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.195 f1:  92.095
+TPR:  98.65 FPR:  47.915
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.675 f1:  91.83500000000001
+TPR:  99.325 FPR:  52.08
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.14 f1:  90.75999999999999
+TPR:  96.605 FPR:  50.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.705 f1:  92.435
+TPR:  99.325 FPR:  47.915
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 79.975 f1:  88.28
+TPR:  99.325 FPR:  79.16499999999999
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.05, batchSize=32
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.695 f1:  92.37
+TPR:  98.63 FPR:  45.835
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 83.59 f1:  90.06
+TPR:  98.65 FPR:  62.5
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.17 f1:  91.38
+TPR:  97.295 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 77.935 f1:  87.03999999999999
+TPR:  97.975 FPR:  83.33500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 83.09 f1:  89.47999999999999
+TPR:  95.24000000000001 FPR:  54.165
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 80.0 f1:  87.91499999999999
+TPR:  96.62 FPR:  70.83500000000001
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.05, batchSize=20
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 32, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.185 f1:  92.075
+TPR:  98.64 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 16, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.68 f1:  91.73
+TPR:  97.975 FPR:  47.92
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 64, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 87.195 f1:  91.965
+TPR:  97.295 FPR:  43.75
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 8, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 85.655 f1:  91.215
+TPR:  98.65 FPR:  54.165
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 86.16499999999999 f1:  91.495
+TPR:  98.65 FPR:  52.08
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 32, 16, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 84.125 f1:  90.12
+TPR:  95.935 FPR:  52.085
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 2, 4, 8, 16, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+22 --------------- (195, 23)
+
+
+
+Model with layers [22, 4, 8, 16, 8, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Train and test data split successfully
+acc: 75.385 f1:  85.965
+TPR:  100.0 FPR:  100.0
+Model sampling completed successfully
+Model sampling completed successfully

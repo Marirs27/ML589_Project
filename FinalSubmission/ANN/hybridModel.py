@@ -16,7 +16,7 @@ class ModelSampler:
     REGULARIZATION_VALUES = [0.01,0.025]
     STEP_SIZE_VALUES = [0.01, 0.05]
     BATCH_SIZE_VALUES = [10,32, 20]
-    K_FOLD = 3
+    K_FOLD = 10
     EPOCHS = 100
     
     def __init__(self, filePath, splice = None, labelColumn = 'label'):

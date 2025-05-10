@@ -243,6 +243,23 @@ def plotMetrics(accuracy, f1Score, models:TrainModel, title="Model Performance")
     plt.show()
 
 
+def hyperParamTuning():
+    modelSampler = ModelSampler(filePath='datasets/parkinsons.csv',labelC='Diagnosis')
+    for reg in modelSampler.REGULARIZATION_VALUES:
+        for step in modelSampler.STEP_SIZE_VALUES:
+            for batch in modelSampler.BATCH_SIZE_VALUES:
+                print(f"Sampling models with regularization={reg}, stepSize={step}, batchSize={batch}")
+                # layerSkeletons.extend(layerSkeletons) 
+                modelSampler.sampleModels(
+                    layerSkeleton=[[3,4,18,1]],
+                    regularization=reg,
+                    stepSize=step,
+                    batchSize=batch,
+                    stoppingCriterionCategory='epochs'
+                )
+                print("Model sampling completed successfully")
+
+
 if __name__ == "__main__":
     layerSkeletons = [
         [64,32,1],
@@ -253,54 +270,21 @@ if __name__ == "__main__":
        [32, 16, 1],  # 3 Hidden Layers
         [2, 4, 8, 16, 1], [4, 8, 16, 8, 1]  # 4 Hidden Layers
     ]
-    # modelSampler = ModelSampler(filePath='datasets/parkinsons.csv',labelC='Diagnosis')
-    # for reg in modelSampler.REGULARIZATION_VALUES:
-    #     for step in modelSampler.STEP_SIZE_VALUES:
-    #         for batch in modelSampler.BATCH_SIZE_VALUES:
-    #             print(f"Sampling models with regularization={reg}, stepSize={step}, batchSize={batch}")
-    #             # layerSkeletons.extend(layerSkeletons) 
-    #             modelSampler.sampleModels(
-    #                 layerSkeleton=[[3,4,18,1]],
-    #                 regularization=reg,
-    #                 stepSize=step,
-    #                 batchSize=batch,
-    #                 stoppingCriterionCategory='epochs'
-    #             )
-    #             print("Model sampling completed successfully")
 
-    # layerSkeletons.extend(WDBC_LAYERS_SKELETON) 
     modelSampler = ModelSampler(filePath='datasets/rice.csv',labelC='label')
     modelSampler.EPOCHS = 100
     modelSampler.sampleModels(
-        layerSkeleton=[[3,4,18,1]],
+        layerSkeleton=layerSkeletons,
         regularization=0.01,
         stepSize=0.01,
         batchSize=10,
         stoppingCriterionCategory='epochs'
     )
 
+    # Run this to sample models with different hyperparameters
+    # hyperParamTuning()
 
-    # for step in [0.01,0.05, 0.5, 1, 10]:
-    #     print(f"Sampling models with step ={step}")
-    #     # layerSkeletons.extend(LOAN_LAYERS_SKELETON) 
-    #     modelSampler.sampleModels(
-    #         layerSkeleton=[[16,8,1]],
-    #         regularization=0.01,
-    #         stepSize=step,
-    #         batchSize=32,
-    #         stoppingCriterionCategory='epochs'
-    #     )
-    #     print("Model sampling completed successfully")
 
-    # for reg in [0.01,0.05, 0.5, 1, 10]:
-    #     print(f"Sampling models with reg ={reg}")
-    #     # layerSkeletons.extend(LOAN_LAYERS_SKELETON) 
-    #     modelSampler.sampleModels(
-    #         layerSkeleton=[[16, 8, 1]],
-    #         regularization=reg,
-    #         stepSize=0.05,
-    #         batchSize=32,
-    #         stoppingCriterionCategory='epochs'
-    #     )
-    #     print("Model sampling completed successfully")
+
+
     

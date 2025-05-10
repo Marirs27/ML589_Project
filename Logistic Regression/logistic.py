@@ -233,15 +233,19 @@ def run_on_parkinsons(encode=True):
     if encode:
         X, y = encode_categorical(X, y)
     X = min_max_normalize(X)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=12)
-    model = LogisticRegressionScratch(learning_rate=0.5, num_iter=1000, batch_size=52, verbose=True)
-    model.fit(X_train, y_train, X_test, y_test)
-    preds = model.predict(X_test)
-    acc = accuracy_score(y_test, preds)
-    f1 = f1_score(y_test, preds, average='binary')
-    print(f"Parkinsons Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.05, batch_size=32, acc=acc, f1=f1)
-    model.plot_roc_curve(y_test, model.predict_proba(X_test))
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=12)
+    # model = LogisticRegressionScratch(learning_rate=0.5, num_iter=1000, batch_size=52, verbose=True)
+    # model.fit(X_train, y_train, X_test, y_test)
+    # preds = model.predict(X_test)
+    # acc = accuracy_score(y_test, preds)
+    # f1 = f1_score(y_test, preds, average='binary')
+    # print(f"Parkinsons Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
+    # model.plot_loss(lr=0.05, batch_size=32, acc=acc, f1=f1)
+    # model.plot_roc_curve(y_test, model.predict_proba(X_test))
+    batch_sizes = [16, 32, 64]
+    learning_rates = [0.001, 0.01, 0.1]
+    reg_lambdas = [0.001, 0.025, 0.1]
+    hyperparam_tuning(X, y, batch_sizes, learning_rates, reg_lambdas)
 
 def run_on_credit(encode=True):
     import pandas as pd
@@ -251,33 +255,37 @@ def run_on_credit(encode=True):
     if encode:
         X, y = encode_categorical(X, y)
     X = min_max_normalize(X)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=12)
-    model = LogisticRegressionScratch(learning_rate=0.5, num_iter=1000, batch_size=52, verbose=True)
-    model.fit(X_train, y_train, X_test, y_test)
-    preds = model.predict(X_test)
-    acc = accuracy_score(y_test, preds)
-    f1 = f1_score(y_test, preds, average='binary')
-    print(f"Credit Approval Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.01, batch_size=64, acc=acc, f1=f1)
-    LogisticRegressionScratch.plot_roc_curve(y_test, model.predict_proba(X_test))
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=12)
+    # model = LogisticRegressionScratch(learning_rate=0.5, num_iter=1000, batch_size=52, verbose=True)
+    # model.fit(X_train, y_train, X_test, y_test)
+    # preds = model.predict(X_test)
+    # acc = accuracy_score(y_test, preds)
+    # f1 = f1_score(y_test, preds, average='binary')
+    # print(f"Credit Approval Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
+    # model.plot_loss(lr=0.01, batch_size=64, acc=acc, f1=f1)
+    # LogisticRegressionScratch.plot_roc_curve(y_test, model.predict_proba(X_test))
     # After loading and preprocessing your data (X, y):
-    # batch_sizes = [16, 32, 64]
-    # learning_rates = [0.01, 0.05, 0.1]
-    # reg_lambdas = [0.001, 0.01, 0.1]
-    # hyperparam_tuning(X, y, batch_sizes, learning_rates, reg_lambdas)
+    batch_sizes = [10, 16, 32, 64]
+    learning_rates = [0.01, 0.05, 0.1]
+    reg_lambdas = [0.001, 0.01, 0.1]
+    hyperparam_tuning(X, y, batch_sizes, learning_rates, reg_lambdas)
 
 def run_digits_mnist():
     digits = datasets.load_digits(return_X_y=True)
     X = min_max_normalize(digits[0])
     y = digits[1]
-    X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
-    model = LogisticRegressionScratch(learning_rate=0.05, num_iter=1000, batch_size=32, verbose=True)
-    model.fit(X_train, y_train, X_test, y_test)
-    preds = model.predict(X_test)
-    acc = np.mean(preds == y_test)
-    f1 = f1_score(y_test, preds, average='weighted')
-    print(f"Digits Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.01, batch_size=64,acc=acc, f1=f1)
+    # X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
+    # model = LogisticRegressionScratch(learning_rate=0.05, num_iter=1000, batch_size=32, verbose=True)
+    # model.fit(X_train, y_train, X_test, y_test)
+    # preds = model.predict(X_test)
+    # acc = np.mean(preds == y_test)
+    # f1 = f1_score(y_test, preds, average='weighted')
+    # print(f"Digits Accuracy: {acc:.4f}", f"F1 Score: {f1:.4f}")
+    # model.plot_loss(lr=0.01, batch_size=64,acc=acc, f1=f1)
+    batch_sizes = [10, 16, 32, 64]
+    learning_rates = [0.01, 0.05, 0.1]
+    reg_lambdas = [0.001, 0.01, 0.1]
+    hyperparam_tuning(X, y, batch_sizes, learning_rates, reg_lambdas)
 
 def run_kuzushiji_mnist():
     kuzushiji = fetch_openml('Kuzushiji-MNIST', version=1)
@@ -285,19 +293,24 @@ def run_kuzushiji_mnist():
     y = kuzushiji.target.astype(int)
     X = min_max_normalize(X)
     X_train, X_test, y_train, y_test = train_test_split(X, y, stratify=y, random_state=42)
-    model = LogisticRegressionScratch(
-        learning_rate=0.01, 
-        num_iter=500, 
-        batch_size=28, 
-        reg_lambda=0.01, 
-        verbose=True
-    )
-    model.fit(X_train, y_train, X_test, y_test)
-    preds = model.predict(X_test)
-    acc = np.mean(preds == y_test)
-    f1 = f1_score(y_test, preds, average='weighted')
-    print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
-    model.plot_loss(lr=0.01, batch_size=64, acc=acc, f1=f1)
+    # model = LogisticRegressionScratch(
+    #     learning_rate=0.01, 
+    #     num_iter=500, 
+    #     batch_size=28, 
+    #     reg_lambda=0.01, 
+    #     verbose=True
+    # )
+    # model.fit(X_train, y_train, X_test, y_test)
+    # preds = model.predict(X_test)
+    # acc = np.mean(preds == y_test)
+    # f1 = f1_score(y_test, preds, average='weighted')
+    # print(f"Kuzushiji-MNIST Accuracy: {acc:.4f}, F1 Score: {f1:.4f}")
+    # model.plot_loss(lr=0.01, batch_size=64, acc=acc, f1=f1)
+    
+    batch_sizes = [10, 16, 32, 64]
+    learning_rates = [0.01, 0.05, 0.1]
+    reg_lambdas = [0.001, 0.01, 0.1]
+    hyperparam_tuning(X, y, batch_sizes, learning_rates, reg_lambdas)
 
 
 
