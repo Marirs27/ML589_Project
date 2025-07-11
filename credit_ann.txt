@@ -1,0 +1,206 @@
+Data loaded successfully from datasets/credit_approval.csv
+Data shape: (653, 16)
+Categorical variables label-encoded successfully (no new columns added)
+Data shape after encoding: (653, 16)
+Data normalized successfully
+Data shape: (653, 16)
+Label distribution:
+label
+0.0    357
+1.0    296
+Name: count, dtype: int64
+Data has been split into 2 folds
+	Fold 1: 326 samples
+	Fold 2: 327 samples
+Sampling models with regularization=0.01, stepSize=0.01, batchSize=10
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.01, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (85.34/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (82.22/s) 
+acc: 80.24 f1:  79.515
+TPR:  84.46000000000001 FPR:  23.259999999999998
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.01, batchSize=32
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.01, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (87.89/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (87.37/s) 
+acc: 66.61 f1:  59.765
+TPR:  55.065 FPR:  23.814999999999998
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.01, batchSize=20
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.01, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (85.25/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (87.38/s) 
+acc: 81.78 f1:  79.63
+TPR:  78.715 FPR:  15.68
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.05, batchSize=10
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.01, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (85.35/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (85.93/s) 
+acc: 86.37 f1:  86.19999999999999
+TPR:  93.91499999999999 FPR:  19.884999999999998
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.05, batchSize=32
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.01, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (89.44/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (89.61/s) 
+acc: 86.06 f1:  85.625
+TPR:  91.555 FPR:  18.490000000000002
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.01, stepSize=0.05, batchSize=20
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.01, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (81.86/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (88.06/s) 
+acc: 86.525 f1:  86.255
+TPR:  93.245 FPR:  19.045
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.01, batchSize=10
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.025, batch size 10, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (86.11/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (86.26/s) 
+acc: 83.15 f1:  82.685
+TPR:  88.515 FPR:  21.3
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.01, batchSize=32
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.025, batch size 32, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (89.75/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (89.28/s) 
+acc: 71.19 f1:  57.16
+TPR:  51.690000000000005 FPR:  12.605
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.01, batchSize=20
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.025, batch size 20, step size 0.01 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (88.32/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (88.79/s) 
+acc: 77.785 f1:  74.275
+TPR:  72.64 FPR:  17.93
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.05, batchSize=10
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.025, batch size 10, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.2s (86.33/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (87.07/s) 
+acc: 86.37 f1:  86.19999999999999
+TPR:  93.91499999999999 FPR:  19.884999999999998
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.05, batchSize=32
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.025, batch size 32, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (89.07/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (89.40/s) 
+acc: 76.095 f1:  74.33
+TPR:  76.69 FPR:  24.39
+Model sampling completed successfully
+Model sampling completed successfully
+Sampling models with regularization=0.025, stepSize=0.05, batchSize=20
+15 --------------- (653, 16)
+
+
+
+Model with layers [15, 16, 8, 1], regularization 0.025, batch size 20, step size 0.05 created successfully
+Weights initialized successfully
+Model built successfully
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (88.58/s) 
+Train and test data split successfully
+Training Progress [########################################] 100/100 [100%] in 1.1s (89.10/s) 
+acc: 86.525 f1:  86.28999999999999
+TPR:  93.58 FPR:  19.325000000000003
+Model sampling completed successfully
+Model sampling completed successfully
